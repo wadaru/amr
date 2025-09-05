@@ -18,5 +18,13 @@ RUN mkdir /var/run/sshd && \
     cp /start-ssh.sh /entrypoint.sh && \
     rm /start-ssh.sh
 
-ENV USER=ryukoku
+ARG USERNAME=ryukoku
 ARG PASSWORD=elec
+WORKDIR /home/$USERNAME/
+
+RUN apt-get update -q && \
+    apt-get upgrade -yq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
+                     net-tools git gcc build-essential vim screen ccache && \
+    rm -rf /var/lib/apt/lists/*
+
