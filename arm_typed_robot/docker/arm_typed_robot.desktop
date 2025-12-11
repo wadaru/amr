@@ -1,0 +1,17 @@
+[Desktop Entry]
+Name=Gazebo(Arm typed robot)
+Comment=run gazebo simulator with an arm typed robot
+TryExec=terminator
+# Exec=sh -c 'source ~/colcon_ws/install/setup.bash && gz sim ~/git/amr/arm_typed_robot/urdf/arm_robot.urdf'
+Exec=terminator -e "bash -c 'source ~/colcon_ws/install/setup.bash && gz sim ~/git/amr/arm_typed_robot/urdf/arm_robot.urdf'"
+Icon=terminator
+Type=Application
+Categories=GNOME;GTK;Utility;TerminalEmulator;System;
+StartupNotify=true
+X-Ubuntu-Gettext-Domain=terminator
+X-Ayatana-Desktop-Shortcuts=NewWindow;
+Keywords=terminal;shell;prompt;command;commandline;
+[NewWindow Shortcut Group]
+Name=Open a New Window
+Exec="gz sim ~/git/amr/arm_typed_robot/urdf/arm_robot.urdf"
+TargetEnvironment=Unity
