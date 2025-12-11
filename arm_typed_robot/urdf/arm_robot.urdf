@@ -10,8 +10,8 @@
       <geometry>
         <cylinder length="0.05" radius="0.1"/>
       </geometry>
-      <material name="silver">
-        <color rgba="0.75 0.75 0.75 1"/>
+      <material name="silver1">
+	<color rgba="0.25 0.25 0.25 1"/>
       </material>
       <origin rpy="0 0 0" xyz="0 0 0.025"/>
     </visual>
@@ -43,8 +43,8 @@
       <geometry>
         <cylinder length="0.5" radius="0.05"/>
       </geometry>
-      <material name="silver">
-        <color rgba="0.75 0.75 0.75 1"/>
+      <material name="silver2">
+        <color rgba="0.50 0.50 0.50 1"/>
       </material>
       <origin rpy="0 0 0" xyz="0 0 0.25"/>
     </visual>
@@ -64,11 +64,11 @@
     </inertial>
   </link>
   <!--胴体と台座をつなぐ関節（腰）-->
-  <joint name="hip" type="continuous">
+  <joint name="joint1" type="continuous">
     <axis xyz="0 0 1"/>
     <parent link="base_link"/>
     <child link="torso"/>
-    <origin rpy="0 0 0" xyz="0.0 0.0 0.05"/>
+    <origin rpy="0 0 1.5708" xyz="0.0 0.0 0.05"/>
   </joint>
   	
   <!--上腕のモデリング-->
@@ -78,7 +78,7 @@
       <geometry>
         <cylinder length="0.4" radius="0.05"/>
       </geometry>
-      <material name="silver"/>
+      <material name="silver1"/>
       <origin rpy="0 0 0" xyz="0 0 0.2"/>
     </visual>
     <!--物理的特性-->
@@ -97,7 +97,7 @@
     </inertial>
   </link>
   <!--上腕と胴体をつなぐ関節（肩）-->
-  <joint name="shoulder" type="continuous">
+  <joint name="joint2" type="continuous">
     <axis xyz="0 1 0"/>
     <parent link="torso"/>
     <child link="upper_arm"/>
@@ -111,7 +111,7 @@
       <geometry>
         <cylinder length="0.4" radius="0.05"/>
       </geometry>
-      <material name="silver"/>
+      <material name="silver2"/>
       <origin rpy="0 0 0" xyz="0 0 0.2"/>
     </visual>
     <!--物理的特性-->
@@ -130,7 +130,7 @@
     </inertial>
   </link>
   <!--前腕と上腕をつなぐ関節（肘）-->
-  <joint name="elbow" type="continuous">
+  <joint name="joint3" type="continuous">
     <axis xyz="0 1 0"/>
     <parent link="upper_arm"/>
     <child link="lower_arm"/>
@@ -144,7 +144,7 @@
       <geometry>
         <box size="0.05 0.05 0.05"/>
       </geometry>
-      <material name="silver"/>
+      <material name="silver1"/>
     </visual>
     <!--物理的特性-->
     <!--干渉-->
@@ -160,7 +160,7 @@
     </inertial>
   </link>
   <!--手と前腕をつなぐ関節（手首）-->
-  <joint name="wrist" type="continuous">
+  <joint name="joint4" type="continuous">
     <axis xyz="0 1 0"/>
     <parent link="lower_arm"/>
     <child link="hand"/>
@@ -172,7 +172,7 @@
   <transmission name="tran0">
     <type>transmission_interface/SimpleTransmission</type>
     <!--関節の指定-->
-    <joint name="hip">
+    <joint name="joint1">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <!--アクチュエータの定義（ギア比1の減速機）-->
@@ -186,7 +186,7 @@
   <transmission name="tran1">
     <type>transmission_interface/SimpleTransmission</type>
     <!--関節の指定-->
-    <joint name="shoulder">
+    <joint name="joint2">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <!--アクチュエータの定義（ギア比1の減速機）-->
@@ -200,7 +200,7 @@
   <transmission name="tran2">
     <type>transmission_interface/SimpleTransmission</type>
     <!--関節の指定-->
-    <joint name="elbow">
+    <joint name="joint3">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <!--アクチュエータの定義（ギア比1の減速機）-->
@@ -214,7 +214,7 @@
   <transmission name="tran3">
     <type>transmission_interface/SimpleTransmission</type>
     <!--関節の指定-->
-    <joint name="wrist">
+    <joint name="joint4">
       <hardwareInterface>hardware_interface/PositionJointInterface</hardwareInterface>
     </joint>
     <!--アクチュエータの定義（ギア比1の減速機）-->
@@ -246,7 +246,7 @@
     <plugin
       filename="gz-sim-joint-trajectory-controller-system"
       name="gz::sim::systems::JointTrajectoryController">
-      <joint_name>hip</joint_name>
+      <joint_name>joint1</joint_name>
       <initial_position>0.0</initial_position>
       <position_p_gain>20</position_p_gain>
       <position_i_gain>0.4</position_i_gain>
@@ -257,7 +257,7 @@
       <position_cmd_max>1</position_cmd_max>
       <position_cmd_offset>0</position_cmd_offset>
 
-      <joint_name>shoulder</joint_name>
+      <joint_name>joint2</joint_name>
       <initial_position>0.0</initial_position>
       <position_p_gain>10</position_p_gain>
       <position_i_gain>0.2</position_i_gain>
@@ -268,7 +268,7 @@
       <position_cmd_max>1</position_cmd_max>
       <position_cmd_offset>0</position_cmd_offset>
 
-      <joint_name>elbow</joint_name>
+      <joint_name>joint3</joint_name>
       <initial_position>0.0</initial_position>
       <position_p_gain>10</position_p_gain>
       <position_i_gain>0.2</position_i_gain>
@@ -279,7 +279,7 @@
       <position_cmd_max>1</position_cmd_max>
       <position_cmd_offset>0</position_cmd_offset>
 
-      <joint_name>wrist</joint_name>
+      <joint_name>joint4</joint_name>
       <initial_position>0.0</initial_position>
       <position_p_gain>10</position_p_gain>
       <position_i_gain>0.2</position_i_gain>
@@ -294,6 +294,64 @@
       <topic>arm_trajectory</topic>
     </plugin>
   </gazebo>
+  <gazebo>
+  <plugin filename="gz-sim-joint-position-controller-system"
+          name="gz::sim::systems::JointPositionController">
+    <joint_name>joint1</joint_name>
+    <initial_velocity>0.0</initial_velocity>
+    <p_gain>50</p_gain>
+    <i_gain>0.1</i_gain>
+    <d_gain>2.0</d_gain>
+    <i_max>1</i_max>
+    <i_min>-1</i_min>
+    <cmd_max>1000</cmd_max>
+    <cmd_min>-1000</cmd_min>
+    <topic>joint1_position_cmd</topic>
+  </plugin>
+
+  <plugin filename="gz-sim-joint-position-controller-system"
+          name="gz::sim::systems::JointPositionController">
+    <joint_name>joint2</joint_name>
+    <initial_velocity>0.0</initial_velocity>
+    <p_gain>50</p_gain>
+    <i_gain>0.1</i_gain>
+    <d_gain>2.0</d_gain>
+    <i_max>1</i_max>
+    <i_min>-1</i_min>
+    <cmd_max>1000</cmd_max>
+    <cmd_min>-1000</cmd_min>
+    <topic>joint2_position_cmd</topic>
+  </plugin>
+
+  <plugin filename="gz-sim-joint-position-controller-system"
+          name="gz::sim::systems::JointPositionController">
+    <joint_name>joint3</joint_name>
+    <initial_velocity>0.0</initial_velocity>
+    <p_gain>50</p_gain>
+    <i_gain>0.1</i_gain>
+    <d_gain>2.0</d_gain>
+    <i_max>1</i_max>
+    <i_min>-1</i_min>
+    <cmd_max>1000</cmd_max>
+    <cmd_min>-1000</cmd_min>
+    <topic>joint3_position_cmd</topic>
+  </plugin>
+
+    <plugin filename="gz-sim-joint-position-controller-system"
+          name="gz::sim::systems::JointPositionController">
+    <joint_name>joint4</joint_name>
+    <initial_velocity>0.0</initial_velocity>
+    <p_gain>50</p_gain>
+    <i_gain>0.1</i_gain>
+    <d_gain>2.0</d_gain>
+    <i_max>1</i_max>
+    <i_min>-1</i_min>
+    <cmd_max>1000</cmd_max>
+    <cmd_min>-1000</cmd_min>
+    <topic>joint4_position_cmd</topic>
+  </plugin>
+</gazebo>
+
 
 </robot>
 
