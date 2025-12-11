@@ -1,7 +1,6 @@
 # FROM --platform="linux/x86_64" tiryoh/ros2-desktop-vnc:humble-amd64
 # FROM --platform="linux/x86_64" tiryoh/ros2-desktop-vnc:jazzy
 FROM tiryoh/ros2-desktop-vnc:jazzy
-# FROM tiryoh/ros2-desktop-vnc:humble
 LABEL maintainer="Wataru UEMURA<wataru@kdel.org>"
 
 RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o /usr/share/keyrings/ros-archive-keyring.gpg && \
@@ -82,48 +81,13 @@ RUN apt-get update -q && \
 #     pip uninstall -y numpy && \
 #     pip install numpy==1.25.2
 
+### make git directory and clone the repository of our team
+RUN mkdir /home/ubuntu/git && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/BabyTigers-R/rcll.git
+
 ### for gazebo
 RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
     apt-get update -y && \
-    apt-get install -yq gz-harmonic && \
-    apt-get install -yq ros-${ROS_DISTRO}-ros2-control ros-${ROS_DISTRO}-ros2-controllers && \
-    apt-get install -yq ros-${ROS_DISTRO}-ros-gz ros-${ROS_DISTRO}-ros-gz-sim
-
-### make git directory and clone the repository of our team
-RUN mkdir -p /home/ubuntu/git && \ 
-    cd /home/ubuntu/git && \
-    git clone https://github.com/BabyTigers-R/rcll.git && \
-    cd rcll && \
-    git checkout 122-for-gazebo-rcll && \
-    apt-get update && \
-    echo "build"
-
-### for gazeo-rcll
-# RUN mkdir -p /home/ubuntu/git && \
-#     cd /home/ubuntu/git &&\
-#     git clone https://github.com/robocup-logistics/gazebo-rcll && \
-#     cd gazebo-rcll/models && \
-#     ln -s carologistics/* . && \
-#     ln -s bbu/* . && \
-#     cd bbu/hokuyo_noisy && \
-#     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
-#     cd /home/ubuntu/git/gazebo-rcll/ && \
-#     git apply /home/ubuntu/git/rcll/ros2/gazebo/gazebo_wataru.patch && \
-#     echo "cd ~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
-#     echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
-#     echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
-#     echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
-
-### for arm-typed-robot on gazebo
-RUN mkdir -p /home/ubuntu/git && \
-    cd /home/ubuntu/git && \
-    git clone https://github.com/wadaru/amr && \
-    # cd /home/ubuntu/colcon_ws/src && \
-    # ln -s /home/ubuntu/git/amr/arm_typed_robot . && \
-    # colcon build && \
-    # echo "cd ~/git/amr/arm_typed_robot/urdf" >> /home/ubuntu/.bashrc && \
-    # echo "gz sim arm_robot.urdf" >> /home/ubuntu/.bashrc
-    mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/arm_typed_tobot/docker/arm_typed_robot.desktop /home/ubuntu/Desktop/
-
+    apt-get install -yq gz-harmonic
