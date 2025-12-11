@@ -124,6 +124,6 @@ RUN mkdir -p /home/ubuntu/git && \
     # colcon build && \
     # echo "cd ~/git/amr/arm_typed_robot/urdf" >> /home/ubuntu/.bashrc && \
     # echo "gz sim arm_robot.urdf" >> /home/ubuntu/.bashrc
-    ln -s /home/ubuntu/git/amr/arm_typed_tobot/docker/arm_typed_robot.desktop /home/ubuntu/De
-sktop/
+    mkdir -p /home/ubuntu/Desktop && \
+    ln -s /home/ubuntu/git/amr/arm_typed_tobot/docker/arm_typed_robot.desktop /home/ubuntu/Desktop/
 
