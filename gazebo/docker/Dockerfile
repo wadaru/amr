@@ -103,6 +103,8 @@ RUN mkdir -p /home/ubuntu/git && \
 RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git && \
     git clone https://github.com/wadaru/amr && \
+    cd amr && \
+    git checkout 5-setup-for-gazebo && \
     mkdir -p /home/ubuntu/Desktop && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
