@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Gazebo(AMR typed robot)
+Comment=run gazebo simulator with mobile robots
+Exec=bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/gazebo-rcll/models && gz sim ~/git/gazebo-rcll/worlds/btr_2025.world'
+Icon=terminator
+Type=Application
+Categories=GNOME;GTK;Utility;TerminalEmulator;System;
+StartupNotify=true
+X-Ubuntu-Gettext-Domain=terminator
+X-Ayatana-Desktop-Shortcuts=NewWindow;
+Keywords=terminal;shell;prompt;command;commandline;
+[NewWindow Shortcut Group]
+Name=Open a New Window
+Exec="gz sim $GAZEBO_WORLD_PATH"
+TargetEnvironment=Unity
