@@ -99,6 +99,19 @@ RUN mkdir -p /home/ubuntu/git && \
     apt-get update && \
     echo "build"
 
+### make AMR environment from git
+RUN mkdir -p /home/ubuntu/git && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/wadaru/amr && \
+    mkdir -p /home/ubuntu/Desktop && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
+    # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
+    # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
+    # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
+    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
+    echo "amr"
+
 ### for gazeo-rcll
 RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git &&\
@@ -110,11 +123,5 @@ RUN mkdir -p /home/ubuntu/git && \
     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
     git apply /home/ubuntu/git/rcll/ros2/gazebo/gazebo_wataru.patch && \
-    mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    # echo "cd ~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
-    # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
     echo "."
 
