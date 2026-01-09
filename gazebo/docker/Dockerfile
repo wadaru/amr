@@ -132,3 +132,8 @@ RUN mkdir -p /home/ubuntu/git && \
     git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
     echo "."
 
+### make myAGV 
+RUN mkdir -p /home/ubuntu/git && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/elephantrobotics/myagv_ros2 && \
+    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models
