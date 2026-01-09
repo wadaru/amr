@@ -82,6 +82,10 @@ RUN apt-get update -q && \
 #     pip uninstall -y numpy && \
 #     pip install numpy==1.25.2
 
+# for colcon_ws
+RUN cd /home/ubuntu && \
+    colcon build 
+
 ### for gazebo
 RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
@@ -125,6 +129,6 @@ RUN mkdir -p /home/ubuntu/git && \
     cd bbu/hokuyo_noisy && \
     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
-    git apply /home/ubuntu/git/rcll/ros2/gazebo/gazebo_wataru.patch && \
+    git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
     echo "."
 
