@@ -573,7 +573,7 @@ index 0000000..4b9277f
 +        </inertia>
 +      </inertial>
 +      <visual name="body-visual">
-+        <pose>0.01 0 0.00 0 0 1.570795</pose>
++        <pose>0.01 0 0.00 0 0 3.14159</pose>
 +        <geometry>
 +          <mesh>
 +            <uri>model://robotino3/meshes/robotino3.dae</uri>
@@ -850,7 +850,7 @@ index 0000000..091ab1b
 +
 +		<include>
 +		  <uri>model://robot_3dw</uri>
-+		  <pose>-5.5 0.5 0 0 0 3.1415</pose>
++		  <pose>-5.5 0.5 0 0 0 0</pose>
 +		</include>
 +
 +		<include>
