@@ -136,4 +136,7 @@ RUN mkdir -p /home/ubuntu/git && \
 RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git && \
     git clone https://github.com/elephantrobotics/myagv_ros2 && \
-    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models
+    cd myagv_ros2 && \
+    git apply  /home/ubuntu/git/amr/gazebo/docker/myAGV_wataru.patch && \
+    mkdir -p /home/ubuntu/git/gazebo-rcll/models/robot_4dw && \
+    gz sdf -p /home/ubuntu/git/myagb_ros2/myagv_description/urdf/myAGV.urdf > /home/ubuntu/git/gazebo-rcll-models/robot_4dw/model.sdf
