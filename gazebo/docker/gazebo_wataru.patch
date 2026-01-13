@@ -854,7 +854,7 @@ index 0000000..091ab1b
 +		</include>
 +
 +		<include>
-+		  <uri>model://robotino_bbu3</uri>
++		  <uri>model://robot_4dw</uri>
 +		  <pose>-6.5 0.5 0 0 0 3.1415</pose>
 +		</include>
 +
