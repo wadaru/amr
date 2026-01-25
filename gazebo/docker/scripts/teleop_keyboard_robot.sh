@@ -1,5 +1,5 @@
 #!/bin/bash
-robotName=robot_2dw1c
+robotName=$1
 source /opt/ros/jazzy/setup.bash
 ros2 run ros_gz_bridge parameter_bridge \
   /$robotName/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist \
