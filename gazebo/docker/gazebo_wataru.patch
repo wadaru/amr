@@ -527,10 +527,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..668e637
+index 0000000..01477fc
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
-@@ -0,0 +1,92 @@
+@@ -0,0 +1,100 @@
 +<sdf version='1.11'>
 +  <model name='myAGV'>
 +    <link name='base_footprint'>
@@ -613,6 +613,14 @@ index 0000000..668e637
 +      </visual>
 +
 +
++      <collision name="collision_base">
++        <geometry>
++          <mesh>
++            <scale>1 1 1</scale>
++            <uri>model://myagv_description/meshes/myagv_base.dae</uri>
++          </mesh>
++        </geometry>
++      </collision>
 +
 +    </link>
 +    <frame name='base_joint' attached_to='base_footprint'>
