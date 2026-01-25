@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Gazebo(AMR typed robot)
+Name=Gazebo(AMR - mobile robot)
 Comment=run gazebo simulator with mobile robots
 Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/gazebo-rcll/models && gz sim ~/git/gazebo-rcll/worlds/btr_2025.world'"
 Icon=terminator

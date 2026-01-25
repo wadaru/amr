@@ -82,6 +82,10 @@ RUN apt-get update -q && \
 #     pip uninstall -y numpy && \
 #     pip install numpy==1.25.2
 
+# for colcon_ws
+RUN cd /home/ubuntu && \
+    colcon build 
+
 ### for gazebo
 RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null && \
@@ -99,6 +103,22 @@ RUN mkdir -p /home/ubuntu/git && \
     apt-get update && \
     echo "build"
 
+### make AMR environment from git
+RUN mkdir -p /home/ubuntu/git && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/wadaru/amr && \
+    cd amr && \
+    git checkout 5-setup-for-gazebo && \
+    mkdir -p /home/ubuntu/Desktop && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-teleop-docker.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
+    # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
+    # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
+    # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
+    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
+    echo "amr."
+
 ### for gazeo-rcll
 RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git &&\
@@ -108,12 +128,27 @@ RUN mkdir -p /home/ubuntu/git && \
     ln -s bbu/* . && \
     cd bbu/hokuyo_noisy && \
     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
+    cd /home/ubuntu/git/amr && \
+    git pull --ff-only && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
-    git apply /home/ubuntu/git/rcll/ros2/gazebo/gazebo_wataru.patch && \
-    mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    # echo "cd ~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
-    # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
+    git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
+    cd models && \
+    git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
+            mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
+            robotino_gripper/model.sdf && \
+    git add ../worlds/btr_2025.world && \
+    git add -N robot_2dw1c robot_3dw robot_4dw && \
+    echo "......"
 
+### make myAGV 
+RUN mkdir -p /home/ubuntu/git && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/elephantrobotics/myagv_ros2 && \
+    cd myagv_ros2 && \
+    git apply  /home/ubuntu/git/amr/gazebo/docker/myAGV_wataru.patch && \
+    mkdir -p /home/ubuntu/git/gazebo-rcll/models/robot_4dw && \
+    #
+    # including gazebo_wataru.patch
+    # gz sdf -p /home/ubuntu/git/myagv_ros2/myagv_description/urdf/myAGV.urdf > /home/ubuntu/git/gazebo-rcll/models/robot_4dw/model.sdf && \
+    cp /home/ubuntu/git/gazebo-rcll/models/robot_3dw/model.config /home/ubuntu/git/gazebo-rcll/models/robot_4dw/ && \
+    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/

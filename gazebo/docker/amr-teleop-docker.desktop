@@ -1,7 +1,7 @@
 [Desktop Entry]
-Name=Gazebo(AMR - mobile robot)
+Name=Teleop by Keyboard
 Comment=run gazebo simulator with mobile robots
-Exec=bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/gazebo-rcll/models && gz sim ~/git/gazebo-rcll/worlds/btr_2025.world'
+Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/amr/gazebo/docker && ./teleop_keyboard_3dw.sh'"
 Icon=terminator
 Type=Application
 Categories=GNOME;GTK;Utility;TerminalEmulator;System;
@@ -11,5 +11,5 @@ X-Ayatana-Desktop-Shortcuts=NewWindow;
 Keywords=terminal;shell;prompt;command;commandline;
 [NewWindow Shortcut Group]
 Name=Open a New Window
-Exec="gz sim $GAZEBO_WORLD_PATH"
+Exec="~/git/amr/gazebo/docker/teleop_keyboard_3wd.sh"
 TargetEnvironment=Unity
