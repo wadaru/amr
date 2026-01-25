@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Teleop by Keyboard
+Name=Teleop 3dw
 Comment=run gazebo simulator with mobile robots
 Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/amr/gazebo/docker/scripts && ./teleop_keyboard_robot.sh robot_3dw'"
 Icon=terminator
