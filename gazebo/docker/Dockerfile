@@ -128,6 +128,8 @@ RUN mkdir -p /home/ubuntu/git && \
     ln -s bbu/* . && \
     cd bbu/hokuyo_noisy && \
     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
+    cd /home/ubuntu/git/amr && \
+    git pull --ff-only && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
     git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
     cd models && \
