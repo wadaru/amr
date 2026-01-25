@@ -743,18 +743,18 @@ index 0000000..525f24b
 +		</include>
 +
 +		<include>
-+		  <uri>model://simple_robot</uri>
++		  <uri>model://robot_3dw1c</uri>
 +		  <pose>-4.5 0.5 0 0 0 1.57</pose>
 +		</include>
 +
 +
 +		<include>
-+		  <uri>model://robotino_bbu2</uri>
++		  <uri>model://robot_3dw</uri>
 +		  <pose>-5.5 0.5 0 0 0 3.1415</pose>
 +		</include>
 +
 +		<include>
-+		  <uri>model://robotino_bbu3</uri>
++		  <uri>model://robot_4dw</uri>
 +		  <pose>-6.5 0.5 0 0 0 3.1415</pose>
 +		</include>
 +
