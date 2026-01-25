@@ -320,7 +320,7 @@ index 0000000..6ccd870
 +
 +            <!-- 差動駆動システムのプラグイン -->
 +            <plugin filename="gz-sim-diff-drive-system" name="gz::sim::systems::DiffDrive">
-+                <topic>cmd_vel</topic>    <!-- 速度指令のトピック名 -->
++                <topic>robot_2dw1c/cmd_vel</topic>    <!-- 速度指令のトピック名 -->
 +                <left_joint>left_wheel_joint</left_joint>    <!-- 左車輪のジョイント名 -->
 +                <right_joint>right_wheel_joint</right_joint>    <!-- 右車輪のジョイント名 -->
 +                <wheel_separation>0.35</wheel_separation>    <!-- 車輪間距離 -->
@@ -490,7 +490,7 @@ index 0000000..c9110b7
 +      filename="gz-sim-velocity-control-system"
 +      name="gz::sim::systems::VelocityControl">
 +      <link_name>body</link_name>
-+      <topic>cmd_vel</topic>
++      <topic>robot_3dw/cmd_vel</topic>
 +    </plugin>
 +
 +    <plugin
