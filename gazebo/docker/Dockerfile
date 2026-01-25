@@ -110,9 +110,9 @@ RUN mkdir -p /home/ubuntu/git && \
     cd amr && \
     git checkout 5-setup-for-gazebo && \
     mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-teleop-docker.desktop /home/ubuntu/Desktop/ && \
-    # ln -s /home/ubuntu/git/amr/gazebo/docker/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
     # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
