@@ -108,7 +108,8 @@ RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git && \
     git clone https://github.com/wadaru/amr && \
     cd amr && \
-    git checkout 5-setup-for-gazebo && \
+    # git checkout 5-setup-for-gazebo && \
+    git checkout 7-add-the-teleop-scripts-for-all-kind-of-mobile-robots && \
     mkdir -p /home/ubuntu/Desktop && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
