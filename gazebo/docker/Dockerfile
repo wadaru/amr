@@ -138,7 +138,7 @@ RUN mkdir -p /home/ubuntu/git && \
             robotino_gripper/model.sdf && \
     git add ../worlds/btr_2025.world && \
     git add -N robot_2dw1c robot_3dw robot_4dw && \
-    echo "."
+    echo "...."
 
 ### make myAGV 
 RUN mkdir -p /home/ubuntu/git && \

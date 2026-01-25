@@ -743,7 +743,7 @@ index 0000000..525f24b
 +		</include>
 +
 +		<include>
-+		  <uri>model://robot_3dw1c</uri>
++		  <uri>model://robot_2dw1c</uri>
 +		  <pose>-4.5 0.5 0 0 0 1.57</pose>
 +		</include>
 +
