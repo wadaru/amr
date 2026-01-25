@@ -130,6 +130,7 @@ RUN mkdir -p /home/ubuntu/git && \
     ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
     git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
+    cd models && \
     git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
             mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
             robotino_gripper/model.sdf && \
