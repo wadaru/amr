@@ -134,11 +134,18 @@ RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
     git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
     cd models && \
-    git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
-            mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
-            robotino_gripper/model.sdf && \
-    git add ../worlds/btr_2025.world../worlds/bbu_2015.world && \
-    git add -N robot_2dw1c robot_3dw robot_4dw && \
+    # git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
+    #         mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
+    #         robotino_gripper/model.sdf && \
+    # git add ../worlds/bbu_2015.world && \
+    git add -N ../worlds/btr_2025.world && \
+    git add -N models/robot_2dw1c/model.config \
+               models/robot_2dw1c/model.sdf \
+               models/robot_3dw/model.config \
+               models/robot_3dw/model.sdf \
+               models/robot_4dw/model.config \
+               models/robot_4dw/model.sdf \
+               models/robot_4dw/wheel.dae && \
     echo "gazebo-rcll......."
 
 ### make myAGV 
