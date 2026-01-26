@@ -137,7 +137,7 @@ RUN mkdir -p /home/ubuntu/git && \
     git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
             mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
             robotino_gripper/model.sdf && \
-    git add ../worlds/btr_2025.world && \
+    git add ../worlds/btr_2025.world../worlds/bbu_2015.world && \
     git add -N robot_2dw1c robot_3dw robot_4dw && \
     echo "gazebo-rcll......."
 

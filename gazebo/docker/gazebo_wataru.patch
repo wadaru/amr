@@ -1,113 +1,3 @@
-diff --git a/models/mps_base/model.sdf b/models/mps_base/model.sdf
-index c3cf5f5..af8ffbe 100644
---- a/models/mps_base/model.sdf
-+++ b/models/mps_base/model.sdf
-@@ -25,13 +25,13 @@
-             <uri>model://mps_base/meshes/mps_base.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_base/materials/scripts</uri>
--            <uri>model://mps_base/materials/textures</uri>
--            <name>mps_base</name>
--          </script>
-+        <material>
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+          <specular>0.1 0.1 0.1 1</specular>
-+          <emissive>0 0 0 1</emissive>
-         </material>
-+
-         <cast_shadows>false</cast_shadows>
-       </visual>
-       <!-- Collision Elements: -->
-diff --git a/models/mps_cap/model.sdf b/models/mps_cap/model.sdf
-index b823f7a..7565097 100644
---- a/models/mps_cap/model.sdf
-+++ b/models/mps_cap/model.sdf
-@@ -26,11 +26,10 @@
-           </mesh>
-         </geometry>
- 	<material>
--          <script>
--            <uri>model://mps_cap/materials/scripts</uri>
--            <uri>model://mps_cap/materials/textures</uri>
--            <name>mps_cap</name>
--          </script>
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>      <!-- Shelf: -->
-diff --git a/models/mps_delivery/model.sdf b/models/mps_delivery/model.sdf
-index 273367d..2bef10f 100644
---- a/models/mps_delivery/model.sdf
-+++ b/models/mps_delivery/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_delivery/meshes/mps_delivery.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_delivery/materials/scripts</uri>
--            <uri>model://mps_delivery/materials/textures</uri>
--            <name>mps_delivery</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
-diff --git a/models/mps_ring/model.sdf b/models/mps_ring/model.sdf
-index 54784eb..8c9debe 100644
---- a/models/mps_ring/model.sdf
-+++ b/models/mps_ring/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_ring/meshes/mps_ring.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_ring/materials/scripts</uri>
--            <uri>model://mps_ring/materials/textures</uri>
--            <name>mps_ring</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
-diff --git a/models/mps_storage/model.sdf b/models/mps_storage/model.sdf
-index c8967ad..693ae99 100644
---- a/models/mps_storage/model.sdf
-+++ b/models/mps_storage/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_storage/meshes/mps_storage.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_storage/materials/scripts</uri>
--            <uri>model://mps_storage/materials/textures</uri>
--            <name>mps_storage</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
 diff --git a/models/robot_2dw1c/model.config b/models/robot_2dw1c/model.config
 new file mode 100644
 index 0000000..fa6b7f7
@@ -131,7 +21,7 @@ index 0000000..fa6b7f7
 +</model>
 diff --git a/models/robot_2dw1c/model.sdf b/models/robot_2dw1c/model.sdf
 new file mode 100644
-index 0000000..6ccd870
+index 0000000..d06bd0e
 --- /dev/null
 +++ b/models/robot_2dw1c/model.sdf
 @@ -0,0 +1,194 @@
@@ -352,7 +242,7 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_3dw/model.sdf b/models/robot_3dw/model.sdf
 new file mode 100644
-index 0000000..c9110b7
+index 0000000..11faf63
 --- /dev/null
 +++ b/models/robot_3dw/model.sdf
 @@ -0,0 +1,148 @@
@@ -527,23 +417,24 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..01477fc
+index 0000000..819a2e2
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
-@@ -0,0 +1,100 @@
+@@ -0,0 +1,119 @@
 +<sdf version='1.11'>
 +  <model name='myAGV'>
 +    <link name='base_footprint'>
 +      <inertial>
 +        <pose>0 0 0 0 0 0</pose>
-+        <mass>0.001</mass>
++        <mass>4.001</mass>
++        <gravity>true</gravity>
 +        <inertia>
-+          <ixx>0.0001</ixx>
++          <ixx>1.0001</ixx>
 +          <ixy>0</ixy>
 +          <ixz>0</ixz>
-+          <iyy>0.0001</iyy>
++          <iyy>1.0001</iyy>
 +          <iyz>0</iyz>
-+          <izz>0.0001</izz>
++          <izz>1.0001</izz>
 +        </inertia>
 +      </inertial>
 +      <visual name='base_footprint_visual'>
@@ -575,7 +466,7 @@ index 0000000..01477fc
 +
 +      <!-- 元のdaeファイルで描画される -->
 +      <visual name='w1'>
-+        <pose>0.11.3 0.08 0.04 0 0 1.57</pose>
++        <pose>0.11 0.08 0.04 0 0 1.57</pose>
 +        <geometry><mesh><uri>model://robot_4dw/wheel.dae</uri></mesh></geometry>
 +        <material>
 +          <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -604,7 +495,7 @@ index 0000000..01477fc
 +      </visual>
 +
 +      <visual name='w4'>
-+        <pose>0.11.3 -0.12 0.04 0 0 1.57</pose>
++        <pose>0.11 -0.12 0.04 0 0 1.57</pose>
 +        <geometry><mesh><uri>model://robot_4dw/wheel.dae</uri></mesh><center>true></center></geometry>
 +        <material>
 +          <diffuse>0.5 0.5 0.5 1</diffuse>
@@ -629,6 +520,24 @@ index 0000000..01477fc
 +    <frame name='base_link' attached_to='base_joint'>
 +      <pose>0 0 0 0 0 0</pose>
 +    </frame>
++
++    <plugin
++      filename="gz-sim-velocity-control-system"
++      name="gz::sim::systems::VelocityControl">
++      <link_name>body_footprint</link_name>
++      <topic>robot_4dw/cmd_vel</topic>
++    </plugin>
++
++    <plugin
++      filename="gz-sim-odometry-publisher-system"
++      name="gz::sim::systems::OdometryPublisher">
++      <odom_frame>odom</odom_frame>
++      <robot_base_frame>body_footprint</robot_base_frame>
++      <topic>odom</topic>
++      <tf_topic>tf</tf_topic>
++      <dimensions>3</dimensions>
++    </plugin>
++
 +  </model>
 +</sdf>
 diff --git a/models/robot_4dw/wheel.dae b/models/robot_4dw/wheel.dae
@@ -767,224 +676,3 @@ index 0000000..b265c90
 +    <instance_visual_scene url="#VisualSceneNode" />
 +  </scene>
 +</COLLADA>
-diff --git a/worlds/bbu_2015.world b/worlds/bbu_2015.world
-index ba61311..d58893f 100644
---- a/worlds/bbu_2015.world
-+++ b/worlds/bbu_2015.world
-@@ -14,7 +14,7 @@
- 		</include>
- 
- 		<include>
--		  <uri>model://logistics_league_field</uri>
-+		  <uri>model://logistics_league_field_2017</uri>
-       	  <pose>0 2.5 0 0 0 0</pose>
- 		</include>
- 
-@@ -35,6 +35,34 @@
-       	  <pose>-5.5 -0.5 0 0 0 3.1415</pose>
- 		</include>-->
- 
-+		<!-- Robotinos  -->
-+		<!-- Team Cyan -->
-+		<include>
-+		  <uri>model://robotino-nr-1</uri>
-+		  <pose>4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-2</uri>
-+		  <pose>5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-3</uri>
-+		  <pose>6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<!-- Team Magenta -->
-+		<include>
-+		  <uri>model://robotino-nr-4</uri>
-+		  <pose>-4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-5</uri>
-+		  <pose>-5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-6</uri>
-+		  <pose>-6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+
- 		<include>
- 		  <name>C-BS</name>
- 		  <uri>model://mps_base</uri>
-diff --git a/worlds/btr_2025.world b/worlds/btr_2025.world
-new file mode 100644
-index 0000000..091ab1b
---- /dev/null
-+++ b/worlds/btr_2025.world
-@@ -0,0 +1,167 @@
-+<?xml version="1.0"?>
-+<sdf version="1.4">
-+	<world name="btr_2025">
-+	 <!-- Physics, to determine the simulation speed (step size and update rate) -->
-+		        <!-- 必要なプラグインの読み込み -->
-+        <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
-+        <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
-+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
-+
-+		<physics type="ode">
-+		  <max_step_size>0.004</max_step_size>
-+		  <real_time_factor>1</real_time_factor>
-+		  <real_time_update_rate>300</real_time_update_rate>
-+	  	</physics>
-+
-+		<scene>
-+		  <ambient>0.5 0.5 0.5 1.0</ambient>
-+		  <shadows>0</shadows>
-+	  	</scene>
-+
-+		<gui>
-+		  <camera name="user camera">
-+		  <pose>1 -2 9.5 0 1.1 1.56</pose>
-+	  	  </camera>
-+	  	</gui>
-+
-+		<!-- Ground Plane -->
-+		<include>
-+		  <uri>model://ground_plane</uri>
-+	  	</include>
-+		<include>
-+		  <uri>model://sun</uri>
-+	  	</include>
-+
-+		<include>
-+		  <uri>model://logistics_league_field_2017</uri>
-+      	  	  <pose>0 4 0 0 0 0</pose>
-+		</include>
-+
-+		<include>
-+		  <uri>model://robot_2dw1c</uri>
-+		  <pose>-4.5 0.5 0 0 0 1.57</pose>
-+		</include>
-+
-+
-+		<include>
-+		  <uri>model://robot_3dw</uri>
-+		  <pose>-5.5 0.5 0 0 0 0</pose>
-+		</include>
-+
-+		<include>
-+		  <uri>model://robot_4dw</uri>
-+		  <pose>-6.5 0.5 0 0 0 3.1415</pose>
-+		</include>
-+
-+		<!-- Robotinos  -->
-+		<!-- Team Cyan -->
-+		<include>
-+		  <uri>model://robotino-nr-1</uri>
-+		  <pose>4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-2</uri>
-+		  <pose>5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-3</uri>
-+		  <pose>6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<!-- Team Magenta -->
-+		<!--
-+		<include>
-+		  <uri>model://robotino-nr-4</uri>
-+		  <pose>-4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-5</uri>
-+		  <pose>-5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-6</uri>
-+		  <pose>-6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		-->
-+
-+		<include>
-+		  <name>C-BS</name>
-+		  <uri>model://mps_base</uri>
-+		  <pose>-5.5 5.5 0 0 0 0.43</pose>
-+		</include>
-+		<include>
-+		  <name>M-BS</name>
-+		  <uri>model://mps_base</uri>
-+		  <pose>5.5 5.5 0 0 0 -0.43</pose>
-+		</include>
-+
-+		<include>
-+		  <name>C-CS1</name>
-+		  <uri>model://mps_cap</uri>
-+		  <pose>-1.5 6.5 0 0 0 1.4</pose>
-+		</include>
-+		<include>
-+		  <name>M-CS1</name>
-+		  <uri>model://mps_cap</uri>
-+      	  	  <pose>1.5 6.5 0 0 0 -1.4</pose>
-+		</include>
-+
-+		<include>
-+		  <name>C-CS2</name>
-+		  <uri>model://mps_cap</uri>
-+		  <pose>-3.2 3.5 0 0 0 1.57</pose>
-+		</include>
-+		<include>
-+		  <name>M-CS2</name>
-+		  <uri>model://mps_cap</uri>
-+		  <pose>3.2 3.5 0 0 0 -1.57</pose>
-+		</include>
-+
-+
-+		<include>
-+		  <name>C-RS1</name>
-+		  <uri>model://mps_ring</uri>
-+		  <pose>1.5 3.5 0 0 0 3.1</pose>
-+		</include>
-+		<include>
-+		  <name>M-RS1</name>
-+		  <uri>model://mps_ring</uri>
-+		  <pose>-1.5 3.5 0 0 0 -3.1</pose>
-+		</include>
-+
-+		<include>
-+		  <name>C-RS2</name>
-+		  <uri>model://mps_ring</uri>
-+		  <pose>4.8 4.5 0 0 0 0.8</pose>
-+		</include>
-+		<include>
-+		  <name>M-RS2</name>
-+		  <uri>model://mps_ring</uri>
-+		  <pose>-4.8 4.5 0 0 0 -0.8</pose>
-+		</include>
-+
-+
-+		<include>
-+		  <name>C-DS</name>
-+		  <uri>model://mps_delivery</uri>
-+		  <pose>4.5 2.5 0 0 0 0.75</pose>
-+		</include>
-+		<include>
-+		  <name>M-DS</name>
-+		  <uri>model://mps_delivery</uri>
-+		  <pose>-4.5 2.5 0 0 0 -0.75</pose>
-+		</include>
-+
-+
-+		<!-- Pucks  -->
-+		<include>
-+		  <name>puck_0</name>
-+		  <uri>model://workpiece_base</uri>
-+		  <pose>0.97 3.5 0.92 0 0 0</pose>
-+		</include>
-+		<include>
-+		  <name>puck_1</name>
-+		  <uri>model://workpiece_base</uri>
-+		  <pose>0.97 3.6 0.92 0 0 0</pose>
-+		</include>
-+	</world>
-+</sdf>
