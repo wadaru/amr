@@ -118,7 +118,7 @@ RUN mkdir -p /home/ubuntu/git && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
     # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
     # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
-    echo "amr.."
+    echo "amr..."
 
 ### for gazeo-rcll
 RUN mkdir -p /home/ubuntu/git && \
@@ -138,6 +138,7 @@ RUN mkdir -p /home/ubuntu/git && \
     #         mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
     #         robotino_gripper/model.sdf && \
     # git add ../worlds/bbu_2015.world && \
+    echo "git add -N" && \
     git add -N worlds/btr_2025.world && \
     git add -N models/robot_2dw1c/model.config \
                models/robot_2dw1c/model.sdf \
