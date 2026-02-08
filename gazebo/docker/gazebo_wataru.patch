@@ -1,3 +1,173 @@
+diff --git a/models/bbu/hokuyo_noisy/model.sdf b/models/bbu/hokuyo_noisy/model.sdf
+index f0bbde7..78ae24c 100644
+--- a/models/bbu/hokuyo_noisy/model.sdf
++++ b/models/bbu/hokuyo_noisy/model.sdf
+@@ -9,7 +9,7 @@
+       <visual name="visual">
+         <geometry>
+           <mesh>
+-            <uri>model://hokuyo/meshes/hokuyo.dae</uri>
++            <uri>model://hokuyo_noisy/meshes/hokuyo.dae</uri>
+           </mesh>
+         </geometry>
+       </visual>
+@@ -30,9 +30,11 @@
+           </cylinder>
+         </geometry>
+       </collision>
+-      <sensor name="laser" type="ray">
+-        <pose>0.01 0 0.0175 0 -0 0</pose>
+-        <visualize>true</visualize>
++      <sensor name="gpu_laser" type="gpu_lidar">
++        <pose>0.0 0 0.0 0 -0 0</pose>
++        <topic>laser</topic>
++        <update_rate>10</update_rate>
++        <enable_metrics>true</enable_metrics>
+         <ray>
+           <scan>
+             <horizontal>
+@@ -41,6 +43,12 @@
+               <min_angle>-2.26889</min_angle>
+               <max_angle>2.268899</max_angle>
+             </horizontal>
++            <vertical>
++              <samples>1</samples>
++              <resolution>0.01</resolution>
++              <min_angle>0</min_angle>
++              <max_angle>0</max_angle>
++            </vertical>
+           </scan>
+           <range>
+             <min>0.08</min>
+@@ -53,17 +61,7 @@
+             <stddev>0.01</stddev>
+           </noise>
+         </ray>
+-        <!--plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
+-          <topicName>laser</topicName>
+-          <frameName>laser_link</frameName>
+-        </plugin-->
+-		<!--plugin name="laser" filename="libgazebo_ros_laser.so">
+-			<topicName>laser</topicName>
+-			<frameName>laser_link</frameName>
+-			<robotNamespace>robot_ns_$(robotNS)</robotNamespace>
+-		</plugin--> 
+-        <always_on>1</always_on>
+-        <update_rate>30</update_rate>
++        <visualize>true</visualize>
+       </sensor>
+     </link>
+   </model>
+diff --git a/models/mps_base/model.sdf b/models/mps_base/model.sdf
+index c3cf5f5..af8ffbe 100644
+--- a/models/mps_base/model.sdf
++++ b/models/mps_base/model.sdf
+@@ -25,13 +25,13 @@
+             <uri>model://mps_base/meshes/mps_base.dae</uri>
+           </mesh>
+         </geometry>
+-	<material>
+-          <script>
+-            <uri>model://mps_base/materials/scripts</uri>
+-            <uri>model://mps_base/materials/textures</uri>
+-            <name>mps_base</name>
+-          </script>
++        <material>
++          <ambient>0.5 0.5 0.5 1</ambient>
++          <diffuse>0.7 0.7 0.7 1</diffuse>
++          <specular>0.1 0.1 0.1 1</specular>
++          <emissive>0 0 0 1</emissive>
+         </material>
++
+         <cast_shadows>false</cast_shadows>
+       </visual>
+       <!-- Collision Elements: -->
+diff --git a/models/mps_cap/model.sdf b/models/mps_cap/model.sdf
+index b823f7a..7565097 100644
+--- a/models/mps_cap/model.sdf
++++ b/models/mps_cap/model.sdf
+@@ -26,11 +26,10 @@
+           </mesh>
+         </geometry>
+ 	<material>
+-          <script>
+-            <uri>model://mps_cap/materials/scripts</uri>
+-            <uri>model://mps_cap/materials/textures</uri>
+-            <name>mps_cap</name>
+-          </script>
++          <ambient>0.5 0.5 0.5 1</ambient>
++          <diffuse>0.7 0.7 0.7 1</diffuse>
++           <specular>0.1 0.1 0.1 1</specular>
++           <emissive>0 0 0 1</emissive>
+         </material>
+         <cast_shadows>false</cast_shadows>
+       </visual>      <!-- Shelf: -->
+diff --git a/models/mps_delivery/model.sdf b/models/mps_delivery/model.sdf
+index 273367d..2bef10f 100644
+--- a/models/mps_delivery/model.sdf
++++ b/models/mps_delivery/model.sdf
+@@ -25,12 +25,11 @@
+             <uri>model://mps_delivery/meshes/mps_delivery.dae</uri>
+           </mesh>
+         </geometry>
+-	<material>
+-          <script>
+-            <uri>model://mps_delivery/materials/scripts</uri>
+-            <uri>model://mps_delivery/materials/textures</uri>
+-            <name>mps_delivery</name>
+-          </script>
++        <material> 
++          <ambient>0.5 0.5 0.5 1</ambient>
++          <diffuse>0.7 0.7 0.7 1</diffuse>
++           <specular>0.1 0.1 0.1 1</specular>
++           <emissive>0 0 0 1</emissive>
+         </material>
+         <cast_shadows>false</cast_shadows>
+       </visual>
+diff --git a/models/mps_ring/model.sdf b/models/mps_ring/model.sdf
+index 54784eb..8c9debe 100644
+--- a/models/mps_ring/model.sdf
++++ b/models/mps_ring/model.sdf
+@@ -25,12 +25,11 @@
+             <uri>model://mps_ring/meshes/mps_ring.dae</uri>
+           </mesh>
+         </geometry>
+-	<material>
+-          <script>
+-            <uri>model://mps_ring/materials/scripts</uri>
+-            <uri>model://mps_ring/materials/textures</uri>
+-            <name>mps_ring</name>
+-          </script>
++        <material> 
++          <ambient>0.5 0.5 0.5 1</ambient>
++          <diffuse>0.7 0.7 0.7 1</diffuse>
++           <specular>0.1 0.1 0.1 1</specular>
++           <emissive>0 0 0 1</emissive>
+         </material>
+         <cast_shadows>false</cast_shadows>
+       </visual>
+diff --git a/models/mps_storage/model.sdf b/models/mps_storage/model.sdf
+index c8967ad..693ae99 100644
+--- a/models/mps_storage/model.sdf
++++ b/models/mps_storage/model.sdf
+@@ -25,12 +25,11 @@
+             <uri>model://mps_storage/meshes/mps_storage.dae</uri>
+           </mesh>
+         </geometry>
+-	<material>
+-          <script>
+-            <uri>model://mps_storage/materials/scripts</uri>
+-            <uri>model://mps_storage/materials/textures</uri>
+-            <name>mps_storage</name>
+-          </script>
++        <material> 
++          <ambient>0.5 0.5 0.5 1</ambient>
++          <diffuse>0.7 0.7 0.7 1</diffuse>
++           <specular>0.1 0.1 0.1 1</specular>
++           <emissive>0 0 0 1</emissive>
+         </material>
+         <cast_shadows>false</cast_shadows>
+       </visual>
 diff --git a/models/robot_2dw1c/model.config b/models/robot_2dw1c/model.config
 new file mode 100644
 index 0000000..10a59e4
@@ -242,10 +412,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_3dw/model.sdf b/models/robot_3dw/model.sdf
 new file mode 100644
-index 0000000..11faf63
+index 0000000..cbf3fc9
 --- /dev/null
 +++ b/models/robot_3dw/model.sdf
-@@ -0,0 +1,148 @@
+@@ -0,0 +1,163 @@
 +<?xml version="1.0" ?>
 +<sdf version="1.4">
 +  <model name="robot_3dw">
@@ -266,6 +436,7 @@ index 0000000..11faf63
 +          <izz>0.759375</izz>
 +        </inertia>
 +      </inertial>
++
 +      <visual name="body-visual">
 +        <pose>0.01 0 0.00 0 0 3.14159</pose>
 +        <geometry>
@@ -370,6 +541,20 @@ index 0000000..11faf63
 +      </visual>
 +    </link>
 +	
++    <include>
++      <uri>model://hokuyo_noisy</uri>
++      <name>/robot_3dw/laser_sensor</name>
++      <pose>0.0 -0.15 0.235 0 0 -1.570796</pose>
++      <plugin filename="gz-sim-breadcrumbs-system" name="gz::sim::systems::Breadcrumbs">
++        <topic_prefix>/robot1</topic_prefix>
++      </plugin>
++    </include>
++
++    <joint name="laser_joint" type="fixed">
++      <parent>body</parent>
++      <child>/robot_3dw/laser_sensor</child>
++    </joint>
++
 +    <!--
 +    <plugin name="Motor" filename="libmotor.so"/>
 +    <plugin name="Gyro" filename="libgyro.so"/>
@@ -417,10 +602,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..819a2e2
+index 0000000..932e207
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
-@@ -0,0 +1,119 @@
+@@ -0,0 +1,153 @@
 +<sdf version='1.11'>
 +  <model name='myAGV'>
 +    <link name='base_footprint'>
@@ -512,6 +697,40 @@ index 0000000..819a2e2
 +          </mesh>
 +        </geometry>
 +      </collision>
++
++    <sensor name="gpu_laser" type="gpu_lidar">
++       <pose>0.01 0 0.0175 0 -0 0</pose>
++      <topic>laser</topic>
++      <update_rate>10</update_rate>
++      <enable_metrics>true</enable_metrics>
++      <ray>
++        <scan>
++          <horizontal>
++            <samples>640</samples>
++            <resolution>1</resolution>
++            <min_angle>-2.26889</min_angle>
++            <max_angle>2.268899</max_angle>
++          </horizontal>
++          <vertical>
++            <samples>1</samples>
++            <resolution>0.01</resolution>
++            <min_angle>0</min_angle>
++            <max_angle>0</max_angle>
++          </vertical>
++        </scan>
++        <range>
++          <min>0.08</min>
++          <max>10.0</max>
++          <resolution>0.01</resolution>
++        </range>
++        <noise>
++          <type>gaussian</type>
++          <mean>0.0</mean>
++          <stddev>0.01</stddev>
++        </noise>
++      </ray>
++      <visualize>true</visualize>
++    </sensor>
 +
 +    </link>
 +    <frame name='base_joint' attached_to='base_footprint'>
@@ -676,20 +895,71 @@ index 0000000..b265c90
 +    <instance_visual_scene url="#VisualSceneNode" />
 +  </scene>
 +</COLLADA>
+diff --git a/worlds/bbu_2015.world b/worlds/bbu_2015.world
+index ba61311..d58893f 100644
+--- a/worlds/bbu_2015.world
++++ b/worlds/bbu_2015.world
+@@ -14,7 +14,7 @@
+ 		</include>
+ 
+ 		<include>
+-		  <uri>model://logistics_league_field</uri>
++		  <uri>model://logistics_league_field_2017</uri>
+       	  <pose>0 2.5 0 0 0 0</pose>
+ 		</include>
+ 
+@@ -35,6 +35,34 @@
+       	  <pose>-5.5 -0.5 0 0 0 3.1415</pose>
+ 		</include>-->
+ 
++		<!-- Robotinos  -->
++		<!-- Team Cyan -->
++		<include>
++		  <uri>model://robotino-nr-1</uri>
++		  <pose>4.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++		<include>
++		  <uri>model://robotino-nr-2</uri>
++		  <pose>5.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++		<include>
++		  <uri>model://robotino-nr-3</uri>
++		  <pose>6.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++		<!-- Team Magenta -->
++		<include>
++		  <uri>model://robotino-nr-4</uri>
++		  <pose>-4.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++		<include>
++		  <uri>model://robotino-nr-5</uri>
++		  <pose>-5.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++		<include>
++		  <uri>model://robotino-nr-6</uri>
++		  <pose>-6.5 0.5 0 0 0 1.57</pose>
++	  	</include>
++
+ 		<include>
+ 		  <name>C-BS</name>
+ 		  <uri>model://mps_base</uri>
 diff --git a/worlds/btr_2025.world b/worlds/btr_2025.world
 new file mode 100644
-index 0000000..ffedb9c
+index 0000000..e413d30
 --- /dev/null
 +++ b/worlds/btr_2025.world
-@@ -0,0 +1,167 @@
+@@ -0,0 +1,170 @@
 +<?xml version="1.0"?>
 +<sdf version="1.4">
 +	<world name="btr_2025">
-+	 <!-- Physics, to determine the simulation speed (step size and update rate) -->
-+		        <!-- 必要なプラグインの読み込み -->
-+        <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
-+        <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
-+        <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
++                <!-- Physics, to determine the simulation speed (step size and update rate) -->
++                <!-- 必要なプラグインの読み込み -->
++                <plugin filename="gz-sim-physics-system" name="gz::sim::systems::Physics"/>
++                <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
++                <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
++                <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
++                  <render_engine>ogre</render_engine>
++                </plugin>
 +
 +		<physics type="ode">
 +		  <max_step_size>0.004</max_step_size>
@@ -849,161 +1119,3 @@ index 0000000..ffedb9c
 +		</include>
 +	</world>
 +</sdf>
-diff --git a/models/mps_base/model.sdf b/models/mps_base/model.sdf
-index c3cf5f5..af8ffbe 100644
---- a/models/mps_base/model.sdf
-+++ b/models/mps_base/model.sdf
-@@ -25,13 +25,13 @@
-             <uri>model://mps_base/meshes/mps_base.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_base/materials/scripts</uri>
--            <uri>model://mps_base/materials/textures</uri>
--            <name>mps_base</name>
--          </script>
-+        <material>
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+          <specular>0.1 0.1 0.1 1</specular>
-+          <emissive>0 0 0 1</emissive>
-         </material>
-+
-         <cast_shadows>false</cast_shadows>
-       </visual>
-       <!-- Collision Elements: -->
-diff --git a/models/mps_cap/model.sdf b/models/mps_cap/model.sdf
-index b823f7a..7565097 100644
---- a/models/mps_cap/model.sdf
-+++ b/models/mps_cap/model.sdf
-@@ -26,11 +26,10 @@
-           </mesh>
-         </geometry>
- 	<material>
--          <script>
--            <uri>model://mps_cap/materials/scripts</uri>
--            <uri>model://mps_cap/materials/textures</uri>
--            <name>mps_cap</name>
--          </script>
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>      <!-- Shelf: -->
-diff --git a/models/mps_delivery/model.sdf b/models/mps_delivery/model.sdf
-index 273367d..2bef10f 100644
---- a/models/mps_delivery/model.sdf
-+++ b/models/mps_delivery/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_delivery/meshes/mps_delivery.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_delivery/materials/scripts</uri>
--            <uri>model://mps_delivery/materials/textures</uri>
--            <name>mps_delivery</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
-diff --git a/models/mps_ring/model.sdf b/models/mps_ring/model.sdf
-index 54784eb..8c9debe 100644
---- a/models/mps_ring/model.sdf
-+++ b/models/mps_ring/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_ring/meshes/mps_ring.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_ring/materials/scripts</uri>
--            <uri>model://mps_ring/materials/textures</uri>
--            <name>mps_ring</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
-diff --git a/models/mps_storage/model.sdf b/models/mps_storage/model.sdf
-index c8967ad..693ae99 100644
---- a/models/mps_storage/model.sdf
-+++ b/models/mps_storage/model.sdf
-@@ -25,12 +25,11 @@
-             <uri>model://mps_storage/meshes/mps_storage.dae</uri>
-           </mesh>
-         </geometry>
--	<material>
--          <script>
--            <uri>model://mps_storage/materials/scripts</uri>
--            <uri>model://mps_storage/materials/textures</uri>
--            <name>mps_storage</name>
--          </script>
-+        <material> 
-+          <ambient>0.5 0.5 0.5 1</ambient>
-+          <diffuse>0.7 0.7 0.7 1</diffuse>
-+           <specular>0.1 0.1 0.1 1</specular>
-+           <emissive>0 0 0 1</emissive>
-         </material>
-         <cast_shadows>false</cast_shadows>
-       </visual>
-diff --git a/worlds/bbu_2015.world b/worlds/bbu_2015.world
-index ba61311..d58893f 100644
---- a/worlds/bbu_2015.world
-+++ b/worlds/bbu_2015.world
-@@ -14,7 +14,7 @@
- 		</include>
- 
- 		<include>
--		  <uri>model://logistics_league_field</uri>
-+		  <uri>model://logistics_league_field_2017</uri>
-       	  <pose>0 2.5 0 0 0 0</pose>
- 		</include>
- 
-@@ -35,6 +35,34 @@
-       	  <pose>-5.5 -0.5 0 0 0 3.1415</pose>
- 		</include>-->
- 
-+		<!-- Robotinos  -->
-+		<!-- Team Cyan -->
-+		<include>
-+		  <uri>model://robotino-nr-1</uri>
-+		  <pose>4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-2</uri>
-+		  <pose>5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-3</uri>
-+		  <pose>6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<!-- Team Magenta -->
-+		<include>
-+		  <uri>model://robotino-nr-4</uri>
-+		  <pose>-4.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-5</uri>
-+		  <pose>-5.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+		<include>
-+		  <uri>model://robotino-nr-6</uri>
-+		  <pose>-6.5 0.5 0 0 0 1.57</pose>
-+	  	</include>
-+
- 		<include>
- 		  <name>C-BS</name>
- 		  <uri>model://mps_base</uri>
