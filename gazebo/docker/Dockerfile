@@ -108,16 +108,19 @@ RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git && \
     git clone https://github.com/wadaru/amr && \
     cd amr && \
-    git checkout 5-setup-for-gazebo && \
+    # git checkout 5-setup-for-gazebo && \
+    git checkout 7-add-the-teleop-scripts-for-all-kind-of-mobile-robots && \
     mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/amr-teleop-docker.desktop /home/ubuntu/Desktop/ && \
-    # ln -s /home/ubuntu/git/amr/gazebo/docker/teleop_keyboard.sh /home/ubuntu/Desktop/ &&\
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard_*.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
     # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
-    echo "amr."
+    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc && \
+    echo "source ~/colcon_ws/install/setup.bash" >> /home/ubuntu/.bashrc && \
+    echo "amr..."
 
 ### for gazeo-rcll
 RUN mkdir -p /home/ubuntu/git && \
@@ -132,13 +135,21 @@ RUN mkdir -p /home/ubuntu/git && \
     git pull --ff-only && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
     git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
-    cd models && \
-    git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
-            mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
-            robotino_gripper/model.sdf && \
-    git add ../worlds/btr_2025.world && \
-    git add -N robot_2dw1c robot_3dw robot_4dw && \
-    echo "......"
+    # cd models && \
+    # git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
+    #         mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
+    #         robotino_gripper/model.sdf && \
+    # git add ../worlds/bbu_2015.world && \
+    echo "git add -N" && \
+    git add -N worlds/btr_2025.world && \
+    git add -N models/robot_2dw1c/model.config \
+               models/robot_2dw1c/model.sdf \
+               models/robot_3dw/model.config \
+               models/robot_3dw/model.sdf \
+               models/robot_4dw/model.config \
+               models/robot_4dw/model.sdf \
+               models/robot_4dw/wheel.dae && \
+    echo "gazebo-rcll......."
 
 ### make myAGV 
 RUN mkdir -p /home/ubuntu/git && \
@@ -151,4 +162,5 @@ RUN mkdir -p /home/ubuntu/git && \
     # including gazebo_wataru.patch
     # gz sdf -p /home/ubuntu/git/myagv_ros2/myagv_description/urdf/myAGV.urdf > /home/ubuntu/git/gazebo-rcll/models/robot_4dw/model.sdf && \
     cp /home/ubuntu/git/gazebo-rcll/models/robot_3dw/model.config /home/ubuntu/git/gazebo-rcll/models/robot_4dw/ && \
-    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/
+    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/ && \
+    echo "myAGV."
