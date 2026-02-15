@@ -111,13 +111,15 @@ RUN mkdir -p /home/ubuntu/git && \
     # git checkout 5-setup-for-gazebo && \
     git checkout 7-add-the-teleop-scripts-for-all-kind-of-mobile-robots && \
     mkdir -p /home/ubuntu/Desktop && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
+    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard_*.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
     # echo "ros2 run ros_gz_bridge parameter_bridge /cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist &" >> /home/ubuntu/.bashrc && \
-    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc
+    # echo "ros2 run teleop_twist_keyboard teleop_twist_keyboard" >> /home/ubuntu/.bashrc && \
+    echo "source ~/colcon_ws/install/setup.bash" >> /home/ubuntu/.bashrc && \
     echo "amr..."
 
 ### for gazeo-rcll

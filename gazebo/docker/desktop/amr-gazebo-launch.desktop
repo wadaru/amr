@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Gazebo(AMR - mobile robot)
+Comment=run gazebo simulator with mobile robots
+Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/git/gazebo-rcll/models && ros2 launch amr_robot_launcher sim_launch.py"
+Icon=terminator
+Type=Application
+Categories=GNOME;GTK;Utility;TerminalEmulator;System;
+StartupNotify=true
+X-Ubuntu-Gettext-Domain=terminator
+X-Ayatana-Desktop-Shortcuts=NewWindow;
+Keywords=terminal;shell;prompt;command;commandline;
+[NewWindow Shortcut Group]
+Name=Open a New Window
+Exec="ros2 launch amr_robot_launcher"
+TargetEnvironment=Unity
