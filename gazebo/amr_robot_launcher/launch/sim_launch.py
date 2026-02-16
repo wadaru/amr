@@ -60,12 +60,18 @@ def generate_launch_description():
         output='screen'
     )
 
+    # Gazeboのプロセスが開始されたらブリッジを起動する設定
+    delayed_bridge = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=gz_sim,
+            on_start=[bridge_node]
+        )
+    )
+
     return LaunchDescription([
         gz_sim,
-        # Gazeboが起動してから少し遅らせてTeleopを起動したい場合は
-        # RegisterEventHandlerを使いますが、今回はシンプルに並列起動します
         teleop_robot_2dw1c,
         teleop_robot_3dw,
         teleop_robot_4dw,
-        bridge_node
+        delayed_bridge
     ])
