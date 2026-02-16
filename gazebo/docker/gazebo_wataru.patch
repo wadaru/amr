@@ -191,10 +191,10 @@ index 0000000..10a59e4
 +</model>
 diff --git a/models/robot_2dw1c/model.sdf b/models/robot_2dw1c/model.sdf
 new file mode 100644
-index 0000000..d06bd0e
+index 0000000..ff435da
 --- /dev/null
 +++ b/models/robot_2dw1c/model.sdf
-@@ -0,0 +1,194 @@
+@@ -0,0 +1,207 @@
 +<?xml version="1.0" ?>
 +<!-- シンプルな差動二輪ロボットのSDFファイル -->
 +<sdf version="1.8">
@@ -387,6 +387,19 @@ index 0000000..d06bd0e
 +                <wheel_radius>0.1</wheel_radius>    <!-- 車輪半径 -->
 +                <odom_publish_frequency>50</odom_publish_frequency>    <!-- Odometry公開の頻度 -->
 +            </plugin>
++            <plugin filename="gz-sim-odometry-publisher-system" name="gz::sim::systems::OdometryPublisher">
++              <odom_frame>robot_2dw1c/odom</odom_frame>
++              <odom_topic>odom</odom_topic>
++	      <tf_topic>/model/robot_2dw1c/tf</tf_topic>
++            </plugin>
++
++            <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
++              <publish_link_pose>true</publish_link_pose>
++              <use_pose_vector_msg>true</use_pose_vector_msg>
++              <static_publisher>true</static_publisher>
++              <static_update_frequency>10</static_update_frequency>
++	      <publish_nested_models>true</publish_nested_models>
++            </plugin>
 +        </model>
 +</sdf>
 diff --git a/models/robot_3dw/model.config b/models/robot_3dw/model.config
@@ -412,10 +425,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_3dw/model.sdf b/models/robot_3dw/model.sdf
 new file mode 100644
-index 0000000..cbf3fc9
+index 0000000..1a0d1e1
 --- /dev/null
 +++ b/models/robot_3dw/model.sdf
-@@ -0,0 +1,163 @@
+@@ -0,0 +1,169 @@
 +<?xml version="1.0" ?>
 +<sdf version="1.4">
 +  <model name="robot_3dw">
@@ -571,11 +584,17 @@ index 0000000..cbf3fc9
 +    <plugin
 +      filename="gz-sim-odometry-publisher-system"
 +      name="gz::sim::systems::OdometryPublisher">
-+      <odom_frame>odom</odom_frame>
-+      <robot_base_frame>body</robot_base_frame>
-+      <topic>odom</topic>
-+      <tf_topic>tf</tf_topic>
-+      <dimensions>3</dimensions>
++      <odom_frame>robot_3dw/odom</odom_frame>
++      <odom_topic>odom</odom_topic>
++      <tf_topic>/model/robot_3dw/tf</tf_topic>
++    </plugin>
++
++    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
++      <publish_link_pose>true</publish_link_pose>      
++      <use_pose_vector_msg>true</use_pose_vector_msg>
++      <static_publisher>true</static_publisher>
++      <static_update_frequency>10</static_update_frequency>
++      <publish_nested_models>true</publish_nested_models>
 +    </plugin>
 +  </model>
 +</sdf>
@@ -602,12 +621,13 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..932e207
+index 0000000..0d8976e
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
-@@ -0,0 +1,153 @@
+@@ -0,0 +1,160 @@
++<?xml version="1.0" ?>
 +<sdf version='1.11'>
-+  <model name='myAGV'>
++  <model name='robot_4dw'>
 +    <link name='base_footprint'>
 +      <inertial>
 +        <pose>0 0 0 0 0 0</pose>
@@ -750,13 +770,19 @@ index 0000000..932e207
 +    <plugin
 +      filename="gz-sim-odometry-publisher-system"
 +      name="gz::sim::systems::OdometryPublisher">
-+      <odom_frame>odom</odom_frame>
-+      <robot_base_frame>body_footprint</robot_base_frame>
++      <odom_frame>robot_4dw/odom</odom_frame>
 +      <topic>odom</topic>
-+      <tf_topic>tf</tf_topic>
++      <tf_topic>/model/robot_4dw/tf</tf_topic>
 +      <dimensions>3</dimensions>
 +    </plugin>
 +
++    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
++      <publish_link_pose>true</publish_link_pose>      
++      <use_pose_vector_msg>true</use_pose_vector_msg>
++      <static_publisher>true</static_publisher>
++      <static_update_frequency>10</static_update_frequency>
++      <publish_nested_models>true</publish_nested_models>
++    </plugin>
 +  </model>
 +</sdf>
 diff --git a/models/robot_4dw/wheel.dae b/models/robot_4dw/wheel.dae

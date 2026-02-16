@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, RegisterEventHandler
 from launch.event_handlers import OnProcessStart
+from launch_ros.actions import Node
 
 def generate_launch_description():
     home = os.path.expanduser('~')
@@ -31,11 +32,40 @@ def generate_launch_description():
     teleop_robot_3dw = create_teleop_process('robot_3dw')
     teleop_robot_4dw = create_teleop_process('robot_4dw')
 
+    # ROS-GZ Bridge の起動
+    # ロボット名が含まれた Gazebo トピックを ROS 2 の /robot_name/odom に変換します
+    bridge_node = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            # Odomのブリッジ
+            '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            '/model/robot_3dw/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            '/model/robot_4dw/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            # TFのブリッジ
+            '/model/robot_2dw1c/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
+            '/model/robot_3dw/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
+            '/model/robot_4dw/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
+        ],
+        remappings=[
+            # Tf のリマップ
+            ('/model/robot_2dw1c/tf', '/tf'),
+            ('/model/robot_3dw/tf', '/tf'),
+            ('/model/robot_4dw/tf', '/tf'),
+            # Odomも分かりやすくリマップ
+            ('/model/robot_2dw1c/odom', '/robot_2dw1c/odom'),
+            ('/model/robot_3dw/odom', '/robot_3dw/odom'),
+            ('/model/robot_4dw/odom', '/robot_4dw/odom'),
+        ],
+        output='screen'
+    )
+
     return LaunchDescription([
         gz_sim,
         # Gazeboが起動してから少し遅らせてTeleopを起動したい場合は
         # RegisterEventHandlerを使いますが、今回はシンプルに並列起動します
         teleop_robot_2dw1c,
         teleop_robot_3dw,
-        teleop_robot_4dw
+        teleop_robot_4dw,
+        bridge_node
     ])
