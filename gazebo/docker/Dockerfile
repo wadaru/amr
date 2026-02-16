@@ -115,6 +115,10 @@ RUN mkdir -p /home/ubuntu/git && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-docker-setup.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/amr_robot_launcher /home/ubuntu/colcon_ws/src/ && \
+    cd /home/ubuntu/colcon_ws &&\
+    colcon build && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard_*.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
