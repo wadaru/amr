@@ -82,9 +82,13 @@ RUN apt-get update -q && \
 #     pip uninstall -y numpy && \
 #     pip install numpy==1.25.2
 
-# for colcon_ws
-RUN cd /home/ubuntu && \
-    colcon build 
+### for colcon_ws
+## RUN cd /home/ubuntu/colcon_ws && \
+##     colcon build 
+# please add the script to ~/desktop/amr-docker-setup.desktop
+# because ~/colcon_ws is linked to the host machine.
+
+
 
 ### for gazebo
 RUN curl https://packages.osrfoundation.org/gazebo.gpg --output /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg && \
@@ -116,9 +120,6 @@ RUN mkdir -p /home/ubuntu/git && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-docker-setup.desktop /home/ubuntu/Desktop/ && \
-    ln -s /home/ubuntu/git/amr/gazebo/amr_robot_launcher /home/ubuntu/colcon_ws/src/ && \
-    cd /home/ubuntu/colcon_ws &&\
-    colcon build && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard_*.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
