@@ -1,5 +1,5 @@
 diff --git a/models/bbu/hokuyo_noisy/model.sdf b/models/bbu/hokuyo_noisy/model.sdf
-index f0bbde7..78ae24c 100644
+index f0bbde7..6818725 100644
 --- a/models/bbu/hokuyo_noisy/model.sdf
 +++ b/models/bbu/hokuyo_noisy/model.sdf
 @@ -9,7 +9,7 @@
@@ -11,22 +11,23 @@ index f0bbde7..78ae24c 100644
            </mesh>
          </geometry>
        </visual>
-@@ -30,9 +30,11 @@
+@@ -30,10 +30,11 @@
            </cylinder>
          </geometry>
        </collision>
 -      <sensor name="laser" type="ray">
 -        <pose>0.01 0 0.0175 0 -0 0</pose>
 -        <visualize>true</visualize>
+-        <ray>
 +      <sensor name="gpu_laser" type="gpu_lidar">
 +        <pose>0.0 0 0.0 0 -0 0</pose>
-+        <topic>laser</topic>
++	<topic>~/laser</topic>
 +        <update_rate>10</update_rate>
-+        <enable_metrics>true</enable_metrics>
-         <ray>
++	<lidar>
            <scan>
              <horizontal>
-@@ -41,6 +43,12 @@
+               <samples>640</samples>
+@@ -41,6 +42,12 @@
                <min_angle>-2.26889</min_angle>
                <max_angle>2.268899</max_angle>
              </horizontal>
@@ -39,10 +40,11 @@ index f0bbde7..78ae24c 100644
            </scan>
            <range>
              <min>0.08</min>
-@@ -53,17 +61,7 @@
+@@ -52,18 +59,8 @@
+             <mean>0.0</mean>
              <stddev>0.01</stddev>
            </noise>
-         </ray>
+-        </ray>
 -        <!--plugin name="gazebo_ros_head_hokuyo_controller" filename="libgazebo_ros_gpu_laser.so">
 -          <topicName>laser</topicName>
 -          <frameName>laser_link</frameName>
@@ -54,6 +56,7 @@ index f0bbde7..78ae24c 100644
 -		</plugin--> 
 -        <always_on>1</always_on>
 -        <update_rate>30</update_rate>
++        </lidar>
 +        <visualize>true</visualize>
        </sensor>
      </link>
@@ -191,10 +194,10 @@ index 0000000..10a59e4
 +</model>
 diff --git a/models/robot_2dw1c/model.sdf b/models/robot_2dw1c/model.sdf
 new file mode 100644
-index 0000000..ff435da
+index 0000000..ba4162c
 --- /dev/null
 +++ b/models/robot_2dw1c/model.sdf
-@@ -0,0 +1,207 @@
+@@ -0,0 +1,243 @@
 +<?xml version="1.0" ?>
 +<!-- シンプルな差動二輪ロボットのSDFファイル -->
 +<sdf version="1.8">
@@ -235,6 +238,41 @@ index 0000000..ff435da
 +                        </box>
 +                    </geometry>
 +                </collision>
++
++
++  <sensor name="gpu_laser_2dw1c" type="gpu_lidar">
++    <!-- <topic> は一旦 消して 自動命名 に任せる -->
++	    <topic>/model/robot_2dw1c/laser</topic>
++    <update_rate>10</update_rate>
++    <lidar>
++      <scan>
++        <horizontal>
++          <samples>640</samples>
++          <resolution>1</resolution>
++          <min_angle>-2.26889</min_angle>
++          <max_angle>2.268899</max_angle>
++        </horizontal>
++        <vertical>
++          <samples>1</samples>
++          <resolution>0.01</resolution>
++          <min_angle>0</min_angle>
++          <max_angle>0</max_angle>
++        </vertical>
++      </scan>
++      <range>
++        <min>0.08</min>
++        <max>10.0</max>
++        <resolution>0.01</resolution>
++      </range>
++      <noise>
++        <type>gaussian</type>
++        <mean>0.0</mean>
++        <stddev>0.01</stddev>
++      </noise>
++    </lidar>
++    <visualize>true</visualize>
++  </sensor>
++
 +            </link>
 +
 +            <!-- 左車輪 -->
@@ -400,6 +438,7 @@ index 0000000..ff435da
 +              <static_update_frequency>10</static_update_frequency>
 +	      <publish_nested_models>true</publish_nested_models>
 +            </plugin>
++
 +        </model>
 +</sdf>
 diff --git a/models/robot_3dw/model.config b/models/robot_3dw/model.config
@@ -425,10 +464,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_3dw/model.sdf b/models/robot_3dw/model.sdf
 new file mode 100644
-index 0000000..1a0d1e1
+index 0000000..9ebba62
 --- /dev/null
 +++ b/models/robot_3dw/model.sdf
-@@ -0,0 +1,169 @@
+@@ -0,0 +1,167 @@
 +<?xml version="1.0" ?>
 +<sdf version="1.4">
 +  <model name="robot_3dw">
@@ -558,9 +597,7 @@ index 0000000..1a0d1e1
 +      <uri>model://hokuyo_noisy</uri>
 +      <name>/robot_3dw/laser_sensor</name>
 +      <pose>0.0 -0.15 0.235 0 0 -1.570796</pose>
-+      <plugin filename="gz-sim-breadcrumbs-system" name="gz::sim::systems::Breadcrumbs">
-+        <topic_prefix>/robot1</topic_prefix>
-+      </plugin>
++      <topic_prefix>/robot1</topic_prefix>
 +    </include>
 +
 +    <joint name="laser_joint" type="fixed">
@@ -621,7 +658,7 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..0d8976e
+index 0000000..678f5b4
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
 @@ -0,0 +1,160 @@
@@ -719,11 +756,11 @@ index 0000000..0d8976e
 +      </collision>
 +
 +    <sensor name="gpu_laser" type="gpu_lidar">
-+       <pose>0.01 0 0.0175 0 -0 0</pose>
-+      <topic>laser</topic>
++      <pose>0.01 0 0.0175 0 -0 0</pose>
++      <topic>~/laser</topic>
 +      <update_rate>10</update_rate>
 +      <enable_metrics>true</enable_metrics>
-+      <ray>
++      <lidar>
 +        <scan>
 +          <horizontal>
 +            <samples>640</samples>
@@ -748,7 +785,7 @@ index 0000000..0d8976e
 +          <mean>0.0</mean>
 +          <stddev>0.01</stddev>
 +        </noise>
-+      </ray>
++      </lidar>
 +      <visualize>true</visualize>
 +    </sensor>
 +
@@ -971,7 +1008,7 @@ index ba61311..d58893f 100644
  		  <uri>model://mps_base</uri>
 diff --git a/worlds/btr_2025.world b/worlds/btr_2025.world
 new file mode 100644
-index 0000000..e413d30
+index 0000000..ebcfd64
 --- /dev/null
 +++ b/worlds/btr_2025.world
 @@ -0,0 +1,170 @@
@@ -984,7 +1021,7 @@ index 0000000..e413d30
 +                <plugin filename="gz-sim-scene-broadcaster-system" name="gz::sim::systems::SceneBroadcaster"/>
 +                <plugin filename="gz-sim-user-commands-system" name="gz::sim::systems::UserCommands"/>
 +                <plugin filename="gz-sim-sensors-system" name="gz::sim::systems::Sensors">
-+                  <render_engine>ogre</render_engine>
++                  <render_engine>ogre2</render_engine>
 +                </plugin>
 +
 +		<physics type="ode">
