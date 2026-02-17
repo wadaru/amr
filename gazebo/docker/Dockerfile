@@ -114,7 +114,7 @@ RUN mkdir -p /home/ubuntu/git && \
     cd amr && \
     # git checkout 5-setup-for-gazebo && \
     # git checkout 7-add-the-teleop-scripts-for-all-kind-of-mobile-robots && \
-    git checkout 9-add-the-camera-on-the-robots && \
+    # git checkout 9-add-the-camera-on-the-robots && \
     mkdir -p /home/ubuntu/Desktop && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
