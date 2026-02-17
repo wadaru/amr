@@ -193,10 +193,10 @@ index 0000000..10a59e4
 +</model>
 diff --git a/models/robot_2dw1c/model.sdf b/models/robot_2dw1c/model.sdf
 new file mode 100644
-index 0000000..ba4162c
+index 0000000..47f3c86
 --- /dev/null
 +++ b/models/robot_2dw1c/model.sdf
-@@ -0,0 +1,243 @@
+@@ -0,0 +1,245 @@
 +<?xml version="1.0" ?>
 +<!-- シンプルな差動二輪ロボットのSDFファイル -->
 +<sdf version="1.8">
@@ -241,7 +241,9 @@ index 0000000..ba4162c
 +
 +  <sensor name="gpu_laser_2dw1c" type="gpu_lidar">
 +    <!-- <topic> は一旦 消して 自動命名 に任せる -->
-+	    <topic>/model/robot_2dw1c/laser</topic>
++    <topic>/model/robot_2dw1c/laser</topic>
++    <gz_frame_id>robot_2dw1c/base_link</gz_frame_id>
++    <pose> 0 0.15 0.12 0 0 0</pose>
 +    <update_rate>10</update_rate>
 +    <lidar>
 +      <scan>
@@ -433,7 +435,7 @@ index 0000000..ba4162c
 +            <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
 +              <publish_link_pose>true</publish_link_pose>
 +              <use_pose_vector_msg>true</use_pose_vector_msg>
-+              <static_publisher>true</static_publisher>
++              <static_publisher>false</static_publisher>
 +              <static_update_frequency>10</static_update_frequency>
 +	      <publish_nested_models>true</publish_nested_models>
 +            </plugin>
@@ -463,10 +465,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_3dw/model.sdf b/models/robot_3dw/model.sdf
 new file mode 100644
-index 0000000..acd4e79
+index 0000000..982d1aa
 --- /dev/null
 +++ b/models/robot_3dw/model.sdf
-@@ -0,0 +1,203 @@
+@@ -0,0 +1,206 @@
 +<?xml version="1.0" ?>
 +<sdf version="1.4">
 +  <model name="robot_3dw">
@@ -599,38 +601,40 @@ index 0000000..acd4e79
 +      </include>
 +      -->
 +      <sensor name="gpu_laser" type="gpu_lidar">
-+      <pose>0.01 0 0.0175 0 -0 0</pose>
-+      <topic>/model/robot_3dw/laser</topic>
-+      <update_rate>10</update_rate>
-+      <enable_metrics>true</enable_metrics>
-+      <lidar>
-+        <scan>
-+          <horizontal>
-+            <samples>640</samples>
-+            <resolution>1</resolution>
-+            <min_angle>-2.26889</min_angle>
-+            <max_angle>2.268899</max_angle>
-+          </horizontal>
-+          <vertical>
-+            <samples>1</samples>
++        <pose>0.0 -0.15 0.235 0 0 0</pose>
++        <topic>/model/robot_3dw/laser</topic>
++        <update_rate>10</update_rate>
++        <enable_metrics>true</enable_metrics>
++        <gz_frame_id>robot_3dw/body</gz_frame_id>
++        <update_rate>10</update_rate>
++        <lidar>
++          <scan>
++            <horizontal>
++              <samples>640</samples>
++              <resolution>1</resolution>
++              <min_angle>-2.26889</min_angle>
++              <max_angle>2.268899</max_angle>
++            </horizontal>
++            <vertical>
++              <samples>1</samples>
++              <resolution>0.01</resolution>
++              <min_angle>0</min_angle>
++              <max_angle>0</max_angle>
++            </vertical>
++          </scan>
++          <range>
++            <min>0.08</min>
++            <max>10.0</max>
 +            <resolution>0.01</resolution>
-+            <min_angle>0</min_angle>
-+            <max_angle>0</max_angle>
-+          </vertical>
-+        </scan>
-+        <range>
-+          <min>0.08</min>
-+          <max>10.0</max>
-+          <resolution>0.01</resolution>
-+        </range>
-+        <noise>
-+          <type>gaussian</type>
-+          <mean>0.0</mean>
-+          <stddev>0.01</stddev>
-+        </noise>
-+      </lidar>
-+      <visualize>true</visualize>
-+    </sensor>
++          </range>
++          <noise>
++            <type>gaussian</type>
++            <mean>0.0</mean>
++            <stddev>0.01</stddev>
++          </noise>
++        </lidar>
++        <visualize>true</visualize>
++      </sensor>
 +    </link>
 +
 +    <!--
@@ -657,14 +661,15 @@ index 0000000..acd4e79
 +      filename="gz-sim-odometry-publisher-system"
 +      name="gz::sim::systems::OdometryPublisher">
 +      <odom_frame>robot_3dw/odom</odom_frame>
-+      <odom_topic>odom</odom_topic>
++      <odom_topic>/model/robot_3dw/odom</odom_topic>
++      <robot_base_frame>robot_3dw/body</robot_base_frame>
 +      <tf_topic>/model/robot_3dw/tf</tf_topic>
 +    </plugin>
 +
 +    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
 +      <publish_link_pose>true</publish_link_pose>      
 +      <use_pose_vector_msg>true</use_pose_vector_msg>
-+      <static_publisher>true</static_publisher>
++      <static_publisher>false</static_publisher>
 +      <static_update_frequency>10</static_update_frequency>
 +      <publish_nested_models>true</publish_nested_models>
 +    </plugin>
@@ -693,10 +698,10 @@ index 0000000..7b5e661
 +</model>
 diff --git a/models/robot_4dw/model.sdf b/models/robot_4dw/model.sdf
 new file mode 100644
-index 0000000..2f07343
+index 0000000..dc984b0
 --- /dev/null
 +++ b/models/robot_4dw/model.sdf
-@@ -0,0 +1,160 @@
+@@ -0,0 +1,161 @@
 +<?xml version="1.0" ?>
 +<sdf version='1.11'>
 +  <model name='robot_4dw'>
@@ -791,10 +796,11 @@ index 0000000..2f07343
 +      </collision>
 +
 +    <sensor name="gpu_laser" type="gpu_lidar">
-+      <pose>0.01 0 0.0175 0 -0 0</pose>
++      <pose>0.0 0 0.10 0 0 0</pose>
 +      <topic>/model/robot_4dw/laser</topic>
 +      <update_rate>10</update_rate>
 +      <enable_metrics>true</enable_metrics>
++      <gz_frame_id>robot_4dw/base_footprint</gz_frame_id>
 +      <lidar>
 +        <scan>
 +          <horizontal>
@@ -843,7 +849,7 @@ index 0000000..2f07343
 +      filename="gz-sim-odometry-publisher-system"
 +      name="gz::sim::systems::OdometryPublisher">
 +      <odom_frame>robot_4dw/odom</odom_frame>
-+      <topic>odom</topic>
++      <topic>/model/robot_4dw/odom</topic>
 +      <tf_topic>/model/robot_4dw/tf</tf_topic>
 +      <dimensions>3</dimensions>
 +    </plugin>
@@ -851,7 +857,7 @@ index 0000000..2f07343
 +    <plugin filename="gz-sim-pose-publisher-system" name="gz::sim::systems::PosePublisher">
 +      <publish_link_pose>true</publish_link_pose>      
 +      <use_pose_vector_msg>true</use_pose_vector_msg>
-+      <static_publisher>true</static_publisher>
++      <static_publisher>false</static_publisher>
 +      <static_update_frequency>10</static_update_frequency>
 +      <publish_nested_models>true</publish_nested_models>
 +    </plugin>

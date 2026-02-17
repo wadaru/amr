@@ -20,7 +20,14 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 2. Teleopを別々のターミナル(terminator)で起動
+    # 2. Rviz2の起動
+    # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
+    rviz2 = ExecuteProcess(
+        cmd=['rviz2', 'rviz2'],
+        output='screen'
+    )
+
+    # 3. Teleopを別々のターミナル(terminator)で起動
     # terminator -e の形式を再現します
     def create_teleop_process(robot_name):
         return ExecuteProcess(
@@ -32,30 +39,47 @@ def generate_launch_description():
     teleop_robot_3dw = create_teleop_process('robot_3dw')
     teleop_robot_4dw = create_teleop_process('robot_4dw')
 
-    # ROS-GZ Bridge の起動
+    # 4. ROS-GZ Bridge の起動
     # ロボット名が含まれた Gazebo トピックを ROS 2 の /robot_name/odom に変換します
     bridge_node = Node(
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
             # Odomのブリッジ
-            '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-            '/model/robot_3dw/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
-            '/model/robot_4dw/odom@nav_msgs/msg/Odometry@gz.msgs.Odometry',
+            '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/robot_3dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/robot_4dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
             # TFのブリッジ
-            '/model/robot_2dw1c/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
-            '/model/robot_3dw/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
-            '/model/robot_4dw/tf@tf2_msgs/msg/TFMessage@gz.msgs.Pose_V',
+            '/model/robot_2dw1c/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            '/model/robot_3dw/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            '/model/robot_4dw/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            # --- Lidar (LaserScan) の追加 ---
+            '/model/robot_2dw1c/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/model/robot_3dw/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/model/robot_4dw/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            # --- Lidar (PointCloud2) の追加 ---
+            '/model/robot_2dw1c/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_3dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_4dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
         ],
         remappings=[
-            # Tf のリマップ
-            ('/model/robot_2dw1c/tf', '/tf'),
-            ('/model/robot_3dw/tf', '/tf'),
-            ('/model/robot_4dw/tf', '/tf'),
-            # Odomも分かりやすくリマップ
+            # Odomのリマップ
             ('/model/robot_2dw1c/odom', '/robot_2dw1c/odom'),
             ('/model/robot_3dw/odom', '/robot_3dw/odom'),
             ('/model/robot_4dw/odom', '/robot_4dw/odom'),
+            # Tfのリマップ
+            ('/model/robot_2dw1c/tf', '/tf'),
+            ('/model/robot_3dw/tf', '/tf'),
+            ('/model/robot_4dw/tf', '/tf'),
+            # Lidar (LaserScan) のリマップ
+            ('/model/robot_2dw1c/laser', '/robot_2dw1c/scan'),
+            ('/model/robot_3dw/laser', '/robot_3dw/scan'),
+            ('/model/robot_4dw/laser', '/robot_4dw/scan'),
+            # Lidar (PointCloud2) のリマップ
+            ('/model/robot_2dw1c/laser/points', '/robot_2dw1c/points'),
+            ('/model/robot_3dw/laser/points', '/robot_3dw/points'),
+            ('/model/robot_4dw/laser/points', '/robot_4dw/points'),
+
         ],
         output='screen'
     )
@@ -70,6 +94,7 @@ def generate_launch_description():
 
     return LaunchDescription([
         gz_sim,
+        rviz2,
         teleop_robot_2dw1c,
         teleop_robot_3dw,
         teleop_robot_4dw,
