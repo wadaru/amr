@@ -89,7 +89,7 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         # 引数: x y z yaw pitch roll parent_frame child_frame
-        arguments = ['-4.5', '0.5', '1.57', '0', '0', '0', 'world', 'robot_2dw1c/odom']
+        arguments = ['-4.5', '0.5', '0', '1.57', '0', '0', 'world', 'robot_2dw1c/odom']
     )
     static_tf_3dw = Node(
         package='tf2_ros',
