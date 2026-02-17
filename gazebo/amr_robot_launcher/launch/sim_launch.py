@@ -61,6 +61,25 @@ def generate_launch_description():
             '/model/robot_2dw1c/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/model/robot_3dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
             '/model/robot_4dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            # Depth Image（gz.msgs.Image → sensor_msgs/Image）
+            '/model/robot_2dw1c/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_3dw/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_4dw/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            # CameraInfo（gz.msgs.CameraInfo → sensor_msgs/CameraInfo）
+            '/model/robot_2dw1c/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_3dw/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_4dw/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            # Depth PointCloud（gz.msgs.PointCloudPacked → sensor_msgs/PointCloud2）
+            '/model/robot_2dw1c/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_3dw/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_4dw/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            # RGB Camera
+            '/model/robot_2dw1c/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_2dw1c/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_3dw/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_3dw/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_4dw/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_4dw/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
         ],
         remappings=[
             # Odomのリマップ
@@ -79,7 +98,25 @@ def generate_launch_description():
             ('/model/robot_2dw1c/laser/points', '/robot_2dw1c/points'),
             ('/model/robot_3dw/laser/points', '/robot_3dw/points'),
             ('/model/robot_4dw/laser/points', '/robot_4dw/points'),
-
+            # Depth Image
+            ('/model/robot_2dw1c/depth_camera', '/robot_2dw1c/depth/image'),
+            ('/model/robot_3dw/depth_camera', '/robot_3dw/depth/image'),
+            ('/model/robot_4dw/depth_camera', '/robot_4dw/depth/image'),
+            # CameraInfo
+            ('/model/robot_2dw1c/depth_camera/camera_info', '/robot_2dw1c/depth/camera_info'),
+            ('/model/robot_3dw/depth_camera/camera_info', '/robot_3dw/depth/camera_info'),
+            ('/model/robot_4dw/depth_camera/camera_info', '/robot_4dw/depth/camera_info'),
+            # Depth PointCloud
+            ('/model/robot_2dw1c/depth_camera/points', '/robot_2dw1c/depth/points'),
+            ('/model/robot_3dw/depth_camera/points', '/robot_3dw/depth/points'),
+            ('/model/robot_4dw/depth_camera/points', '/robot_4dw/depth/points'),
+            # RGB Camera
+            ('/model/robot_2dw1c/rgb_camera', '/robot_2dw1c/rgb/image'),
+            ('/model/robot_2dw1c/rgb_camera/camera_info', '/robot_2dw1c/rgb/camera_info'),
+            ('/model/robot_3dw/rgb_camera', '/robot_3dw/rgb/image'),
+            ('/model/robot_3dw/rgb_camera/camera_info', '/robot_3dw/rgb/camera_info'),
+            ('/model/robot_4dw/rgb_camera', '/robot_4dw/rgb/image'),
+            ('/model/robot_4dw/rgb_camera/camera_info', '/robot_4dw/rgb/camera_info'),
         ],
         output='screen'
     )
@@ -102,6 +139,23 @@ def generate_launch_description():
         arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/odom']
     )
 
+    # URDFのtf用
+    static_tf_2dw1c_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_2dw1c/base_link', 'robot_2dw1c/depth_camera_frame']
+    )
+    static_tf_3dw_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_3dw/body', 'robot_3dw/depth_camera_frame']
+    )
+    static_tf_4dw_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_4dw/base_footprint', 'robot_4dw/depth_camera_frame']
+    )
+
     # Gazeboのプロセスが開始されたらブリッジを起動する設定
     delayed_bridge = RegisterEventHandler(
         event_handler=OnProcessStart(
@@ -119,5 +173,8 @@ def generate_launch_description():
         static_tf_2dw1c,
         static_tf_3dw,
         static_tf_4dw,
+        static_tf_2dw1c_depth_cam,
+        static_tf_3dw_depth_cam,
+        static_tf_4dw_depth_cam,
         delayed_bridge
     ])
