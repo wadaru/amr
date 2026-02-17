@@ -2,6 +2,7 @@ import os
 from launch import LaunchDescription
 from launch.actions import ExecuteProcess, RegisterEventHandler
 from launch.event_handlers import OnProcessStart
+from launch_ros.actions import Node
 
 def generate_launch_description():
     home = os.path.expanduser('~')
@@ -19,7 +20,14 @@ def generate_launch_description():
         output='screen'
     )
 
-    # 2. Teleopを別々のターミナル(terminator)で起動
+    # 2. Rviz2の起動
+    # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
+    rviz2 = ExecuteProcess(
+        cmd=['rviz2', 'rviz2'],
+        output='screen'
+    )
+
+    # 3. Teleopを別々のターミナル(terminator)で起動
     # terminator -e の形式を再現します
     def create_teleop_process(robot_name):
         return ExecuteProcess(
@@ -31,11 +39,142 @@ def generate_launch_description():
     teleop_robot_3dw = create_teleop_process('robot_3dw')
     teleop_robot_4dw = create_teleop_process('robot_4dw')
 
+    # 4. ROS-GZ Bridge の起動
+    # ロボット名が含まれた Gazebo トピックを ROS 2 の /robot_name/odom に変換します
+    bridge_node = Node(
+        package='ros_gz_bridge',
+        executable='parameter_bridge',
+        arguments=[
+            # Odomのブリッジ
+            '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/robot_3dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            '/model/robot_4dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
+            # TFのブリッジ
+            '/model/robot_2dw1c/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            '/model/robot_3dw/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            '/model/robot_4dw/tf@tf2_msgs/msg/TFMessage[gz.msgs.Pose_V',
+            # --- Lidar (LaserScan) の追加 ---
+            '/model/robot_2dw1c/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/model/robot_3dw/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            '/model/robot_4dw/laser@sensor_msgs/msg/LaserScan[gz.msgs.LaserScan',
+            # --- Lidar (PointCloud2) の追加 ---
+            '/model/robot_2dw1c/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_3dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_4dw/laser/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            # Depth Image（gz.msgs.Image → sensor_msgs/Image）
+            '/model/robot_2dw1c/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_3dw/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_4dw/depth_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            # CameraInfo（gz.msgs.CameraInfo → sensor_msgs/CameraInfo）
+            '/model/robot_2dw1c/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_3dw/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_4dw/depth_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            # Depth PointCloud（gz.msgs.PointCloudPacked → sensor_msgs/PointCloud2）
+            '/model/robot_2dw1c/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_3dw/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            '/model/robot_4dw/depth_camera/points@sensor_msgs/msg/PointCloud2[gz.msgs.PointCloudPacked',
+            # RGB Camera
+            '/model/robot_2dw1c/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_2dw1c/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_3dw/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_3dw/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+            '/model/robot_4dw/rgb_camera@sensor_msgs/msg/Image[gz.msgs.Image',
+            '/model/robot_4dw/rgb_camera/camera_info@sensor_msgs/msg/CameraInfo[gz.msgs.CameraInfo',
+        ],
+        remappings=[
+            # Odomのリマップ
+            ('/model/robot_2dw1c/odom', '/robot_2dw1c/odom'),
+            ('/model/robot_3dw/odom', '/robot_3dw/odom'),
+            ('/model/robot_4dw/odom', '/robot_4dw/odom'),
+            # Tfのリマップ
+            ('/model/robot_2dw1c/tf', '/tf'),
+            ('/model/robot_3dw/tf', '/tf'),
+            ('/model/robot_4dw/tf', '/tf'),
+            # Lidar (LaserScan) のリマップ
+            ('/model/robot_2dw1c/laser', '/robot_2dw1c/scan'),
+            ('/model/robot_3dw/laser', '/robot_3dw/scan'),
+            ('/model/robot_4dw/laser', '/robot_4dw/scan'),
+            # Lidar (PointCloud2) のリマップ
+            ('/model/robot_2dw1c/laser/points', '/robot_2dw1c/points'),
+            ('/model/robot_3dw/laser/points', '/robot_3dw/points'),
+            ('/model/robot_4dw/laser/points', '/robot_4dw/points'),
+            # Depth Image
+            ('/model/robot_2dw1c/depth_camera', '/robot_2dw1c/depth/image'),
+            ('/model/robot_3dw/depth_camera', '/robot_3dw/depth/image'),
+            ('/model/robot_4dw/depth_camera', '/robot_4dw/depth/image'),
+            # CameraInfo
+            ('/model/robot_2dw1c/depth_camera/camera_info', '/robot_2dw1c/depth/camera_info'),
+            ('/model/robot_3dw/depth_camera/camera_info', '/robot_3dw/depth/camera_info'),
+            ('/model/robot_4dw/depth_camera/camera_info', '/robot_4dw/depth/camera_info'),
+            # Depth PointCloud
+            ('/model/robot_2dw1c/depth_camera/points', '/robot_2dw1c/depth/points'),
+            ('/model/robot_3dw/depth_camera/points', '/robot_3dw/depth/points'),
+            ('/model/robot_4dw/depth_camera/points', '/robot_4dw/depth/points'),
+            # RGB Camera
+            ('/model/robot_2dw1c/rgb_camera', '/robot_2dw1c/rgb/image'),
+            ('/model/robot_2dw1c/rgb_camera/camera_info', '/robot_2dw1c/rgb/camera_info'),
+            ('/model/robot_3dw/rgb_camera', '/robot_3dw/rgb/image'),
+            ('/model/robot_3dw/rgb_camera/camera_info', '/robot_3dw/rgb/camera_info'),
+            ('/model/robot_4dw/rgb_camera', '/robot_4dw/rgb/image'),
+            ('/model/robot_4dw/rgb_camera/camera_info', '/robot_4dw/rgb/camera_info'),
+        ],
+        output='screen'
+    )
+
+    # world 座標から各ロボットの odom への固定位置関係を定義
+    static_tf_2dw1c = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        # 引数: x y z yaw pitch roll parent_frame child_frame
+        arguments = ['-4.5', '0.5', '0', '1.57', '0', '0', 'world', 'robot_2dw1c/odom']
+    )
+    static_tf_3dw = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_3dw/odom']
+    )
+    static_tf_4dw = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/odom']
+    )
+
+    # URDFのtf用
+    static_tf_2dw1c_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_2dw1c/base_link', 'robot_2dw1c/depth_camera_frame']
+    )
+    static_tf_3dw_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_3dw/body', 'robot_3dw/depth_camera_frame']
+    )
+    static_tf_4dw_depth_cam = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_4dw/base_footprint', 'robot_4dw/depth_camera_frame']
+    )
+
+    # Gazeboのプロセスが開始されたらブリッジを起動する設定
+    delayed_bridge = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=gz_sim,
+            on_start=[bridge_node]
+        )
+    )
+
     return LaunchDescription([
         gz_sim,
-        # Gazeboが起動してから少し遅らせてTeleopを起動したい場合は
-        # RegisterEventHandlerを使いますが、今回はシンプルに並列起動します
+        rviz2,
         teleop_robot_2dw1c,
         teleop_robot_3dw,
-        teleop_robot_4dw
+        teleop_robot_4dw,
+        static_tf_2dw1c,
+        static_tf_3dw,
+        static_tf_4dw,
+        static_tf_2dw1c_depth_cam,
+        static_tf_3dw_depth_cam,
+        static_tf_4dw_depth_cam,
+        delayed_bridge
     ])

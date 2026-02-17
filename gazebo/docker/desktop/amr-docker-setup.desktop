@@ -1,0 +1,15 @@
+[Desktop Entry]
+Name=Setup(AMR - mobile robot)
+Comment=run gazebo simulator with mobile robots
+Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && cd ~/colcon_ws && ln -s /home/ubuntu/git/amr/gazebo/amr_robot_launcher /home/ubuntu/colcon_ws/src/ && colcon build'"
+Icon=terminator
+Type=Application
+Categories=GNOME;GTK;Utility;TerminalEmulator;System;
+StartupNotify=true
+X-Ubuntu-Gettext-Domain=terminator
+X-Ayatana-Desktop-Shortcuts=NewWindow;
+Keywords=terminal;shell;prompt;command;commandline;
+[NewWindow Shortcut Group]
+Name=Open a New Window
+Exec="colcon build"
+TargetEnvironment=Unity
