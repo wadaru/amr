@@ -170,3 +170,9 @@ RUN mkdir -p /home/ubuntu/git && \
     cp /home/ubuntu/git/gazebo-rcll/models/robot_3dw/model.config /home/ubuntu/git/gazebo-rcll/models/robot_4dw/ && \
     ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/ && \
     echo "myAGV."
+
+### install  SLAM-toolbox
+RUN apt-get update -q && \
+    apt-get upgrade -yq && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq ros-${ROS_DISTRO}-slam-toolbox && \
+    rm -rf /var/lib/apt/lists/*
