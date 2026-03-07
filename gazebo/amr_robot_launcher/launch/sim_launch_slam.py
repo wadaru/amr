@@ -13,8 +13,8 @@ def generate_launch_description():
     models_dir = os.path.join(home, 'git/gazebo-rcll/models')
     teleop_script = os.path.join(home, 'git/amr/gazebo/docker/scripts/teleop_keyboard_robot.sh')
 
-    # 起動時に「gz」を削除
-    subprocess.run("pkill -9 -f gz; ", shell=True)
+    # 起動時に「gz」を全消去
+    subprocess.run("pkill -9 -f gz", shell=True)
 
     # 1. Gazebo Simの起動
     # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
@@ -49,6 +49,8 @@ def generate_launch_description():
         package='ros_gz_bridge',
         executable='parameter_bridge',
         arguments=[
+            # clock のブリッジ
+            '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
             # Odomのブリッジ
             '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
             '/model/robot_3dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
@@ -160,6 +162,63 @@ def generate_launch_description():
         arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_4dw/base_footprint', 'robot_4dw/depth_camera_frame']
     )
 
+    # --- slam_toolbox のノード定義 ---
+    slam_toolbox_node = Node(
+        package='slam_toolbox',
+        executable='async_slam_toolbox_node',
+        namespace='robot_4dw',
+        name='slam_toolbox',
+        output='screen',
+        parameters=[
+            os.path.join(home, 'colcon_ws/src/amr_robot_launcher/yaml/robot_4dw_slam.yaml'),
+            {
+                'use_sim_time': True,
+                'odom_frame': 'robot_4dw/odom',
+                'base_frame': 'robot_4dw/base_footprint',
+                'map_frame': 'robot_4dw/map',
+            }
+        ],
+        remappings=[
+            ('/tf', '/tf'),
+            ('/tf_static', '/tf_static'),
+            ('/scan', '/robot_4dw/scan'), # 名前空間内なので相対名でもOK
+            ('/map', '/robot_4dw/map'),
+            ('/map_metadata', '/robot_4dw/map_metadata'),
+            ('/map_updates', '/robot_4dw/map_updates'),
+        ]
+    )
+
+    # --- ライフサイクルを自動で Configure -> Activate する設定 ---
+    # ExecuteProcess を使って ros2 lifecycle set コマンドを時間差で実行します
+    configure_event = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=slam_toolbox_node,
+            on_start=[
+                ExecuteProcess(
+                    cmd=['ros2', 'lifecycle', 'set', '/robot_4dw/slam_toolbox', 'configure'],
+                    output='screen'
+                )
+            ]
+        )
+    )
+
+    # configure が成功したタイミングを見計らって activate する（簡易的にタイマーで遅延させる例）
+    # 本来は OnStateTransition を使うのが理想ですが、以下の簡易的な方法でも動きます
+    activate_event = ExecuteProcess(
+        # cmd=['bash', '-c', 'sleep 5; ros2 lifecycle', 'set', '/robot_4dw/slam_toolbox', 'activate'],
+        cmd=['bash', '-c', 'sleep 5; ros2 lifecycle set /robot_4dw/slam_toolbox activate'],
+        output='screen'
+    )
+
+    # 既存の static_tf_4dw は SLAM と競合するため、SLAM 起動時は除外するか、
+    # 接続先を robot_4dw/map に繋ぎ変える必要があります。
+    # ここでは、world -> robot_4dw/map を繋ぐ static_tf に書き換えます。
+    static_tf_4dw_to_map = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/map']
+    )
+
     # Gazeboのプロセスが開始されたらブリッジを起動する設定
     delayed_bridge = RegisterEventHandler(
         event_handler=OnProcessStart(
@@ -176,9 +235,14 @@ def generate_launch_description():
         teleop_robot_4dw,
         static_tf_2dw1c,
         static_tf_3dw,
-        static_tf_4dw,
+        # static_tf_4dw,
         static_tf_2dw1c_depth_cam,
         static_tf_3dw_depth_cam,
         static_tf_4dw_depth_cam,
-        delayed_bridge
+        static_tf_4dw_to_map,
+        delayed_bridge,
+        slam_toolbox_node,
+        configure_event,
+        # activate は configure の少し後に動くように最後に配置
+        activate_event
     ])

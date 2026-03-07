@@ -116,10 +116,9 @@ RUN mkdir -p /home/ubuntu/git && \
     # git checkout 7-add-the-teleop-scripts-for-all-kind-of-mobile-robots && \
     # git checkout 9-add-the-camera-on-the-robots && \
     mkdir -p /home/ubuntu/Desktop && \
-    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-docker.desktop /home/ubuntu/Desktop/ && \
-    # ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-teleop-docker_*.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-docker-setup.desktop /home/ubuntu/Desktop/ && \
+    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch_slam.desktop /home/ubuntu/Desktop/ && \
     # ln -s /home/ubuntu/git/amr/gazebo/docker/scriptes/teleop_keyboard_*.sh /home/ubuntu/Desktop/ &&\
     # echo "cd ddd~/git/gazebo-rcll/models && gz sim ../worlds/btr_2025.world &" >> /home/ubuntu/.bashrc && \
     # echo "source /opt/ros/jazzy/setup.bash" >> /home/ubuntu/.bashrc && \
