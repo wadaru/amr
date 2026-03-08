@@ -1,5 +1,5 @@
 services:
-  amr2025:
+  amr2026:
     build: .
     volumes:
       - ~/ros2_ws:/home/ubuntu/colcon_ws:cached

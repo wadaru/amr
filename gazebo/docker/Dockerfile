@@ -8,7 +8,7 @@ RUN curl -sSL https://raw.githubusercontent.com/ros/rosdistro/master/ros.key -o 
     echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/ros-archive-keyring.gpg] http://packages.ros.org/ros2/ubuntu $(. /etc/os-release && echo $UBUNTU_CODENAME) main" | tee /etc/apt/sources.list.d/ros2.list > /dev/null &&\
     add-apt-repository universe && \
     apt-get update -q && \
-    apt-get upgrade -yq && \
+    apt-get upgrade -yq --allow-downgrades && \
     DEBIAN_FRONTEND=noninteractive apt-get install -y openssh-server
 
 ### for ssh server
@@ -26,7 +26,7 @@ RUN mkdir /var/run/sshd && \
 # WORKDIR /home/$USERNAME/
 
 RUN apt-get update -q && \
-    apt-get upgrade -yq && \
+    apt-get upgrade -yq  --allow-downgrades && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq \
                      net-tools git gcc build-essential vim screen ccache && \
     rm -rf /var/lib/apt/lists/*
@@ -46,7 +46,7 @@ RUN apt-get update -q && \
 #    DEBIAN_FRONTEND=noninteractive apt-get install -yq \
 #      gnome && \
 RUN apt-get update -q && \
-    apt-get upgrade -yq && \
+    apt-get upgrade -yq  --allow-downgrades && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq \
       python3-pip python3-usb && \
     rm -rf /var/lib/apt/lists/*
@@ -172,6 +172,6 @@ RUN mkdir -p /home/ubuntu/git && \
 
 ### install  SLAM-toolbox
 RUN apt-get update -q && \
-    apt-get upgrade -yq && \
+    apt-get upgrade -yq  --allow-downgrades && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq ros-${ROS_DISTRO}-slam-toolbox && \
     rm -rf /var/lib/apt/lists/*
