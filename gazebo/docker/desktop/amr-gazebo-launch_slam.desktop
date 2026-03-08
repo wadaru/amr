@@ -1,7 +1,7 @@
 [Desktop Entry]
 Name=Gazebo(AMR SLAM - mobile robot)
 Comment=run gazebo simulator with mobile robots
-Exec=terminator -e "bash -c 'source ~/.bashrc && source ~/colcon_ws/install/setup.bash && sleep 1 && cd ~/git/gazebo-rcll/models && ros2 launch amr_robot_launcher sim_launch_slam.py'"
+Exec=terminator -e "bash ~/git/amr/gazebo/docker/desktop/amr-gazebo-launch_slam.sh"
 Icon=terminator
 Type=Application
 Categories=GNOME;GTK;Utility;TerminalEmulator;System;
