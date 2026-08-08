@@ -13,6 +13,13 @@ def generate_launch_description():
     models_dir = os.path.join(home, 'git/gazebo-rcll/models')
     teleop_script = os.path.join(home, 'git/amr/gazebo/docker/scripts/teleop_keyboard_robot.sh')
 
+    gz_resource_path = ':'.join([
+        models_dir,
+        os.path.join(models_dir, 'carologistics'),
+        os.path.join(models_dir, 'bbu'),
+        os.path.join(models_dir, 'pyro'),
+    ])
+
     # 起動時に「gz」を全消去
     subprocess.run("pkill -9 -f gz", shell=True)
 
@@ -20,7 +27,8 @@ def generate_launch_description():
     # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
     gz_sim = ExecuteProcess(
         cmd=['gz', 'sim', '-r', world_path],
-        additional_env={'GZ_SIM_RESOURCE_PATH': models_dir},
+        # additional_env={'GZ_SIM_RESOURCE_PATH': models_dir},
+        additional_env = {'GZ_SIM_RESOURCE_PATH': gz_resource_path},
         output='screen'
     )
 
