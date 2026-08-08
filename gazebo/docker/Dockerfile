@@ -103,7 +103,7 @@ RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git && \
     git clone https://github.com/BabyTigers-R/rcll.git && \
     cd rcll && \
-    git checkout 122-for-gazebo-rcll && \
+    # git checkout 122-for-gazebo-rcll && \
     apt-get update && \
     echo "build"
 
@@ -128,34 +128,43 @@ RUN mkdir -p /home/ubuntu/git && \
     echo "source ~/colcon_ws/install/setup.bash" >> /home/ubuntu/.bashrc && \
     echo "amr..."
 
-### for gazeo-rcll
+##### for gazeo-rcll
+##RUN mkdir -p /home/ubuntu/git && \
+##    cd /home/ubuntu/git &&\
+##    git clone https://github.com/robocup-logistics/gazebo-rcll && \
+##    cd gazebo-rcll/models && \
+##    ln -s carologistics/* . && \
+##    ln -s bbu/* . && \
+##    cd bbu/hokuyo_noisy && \
+##    ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
+##    cd /home/ubuntu/git/amr && \
+##    git pull --ff-only && \
+##    cd /home/ubuntu/git/gazebo-rcll/ && \
+##    git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
+##    # cd models && \
+##    # git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
+##    #         mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
+##    #         robotino_gripper/model.sdf && \
+##    # git add ../worlds/bbu_2015.world && \
+##    echo "git add -N" && \
+##    git add -N worlds/btr_2025.world && \
+##    git add -N models/robot_2dw1c/model.config \
+##               models/robot_2dw1c/model.sdf \
+##               models/robot_3dw/model.config \
+##               models/robot_3dw/model.sdf \
+##               models/robot_4dw/model.config \
+##               models/robot_4dw/model.sdf \
+##               models/robot_4dw/wheel.dae && \
+##    echo "gazebo-rcll......."
+## for gazebo-rcll (New version)
 RUN mkdir -p /home/ubuntu/git && \
-    cd /home/ubuntu/git &&\
-    git clone https://github.com/robocup-logistics/gazebo-rcll && \
-    cd gazebo-rcll/models && \
-    ln -s carologistics/* . && \
-    ln -s bbu/* . && \
-    cd bbu/hokuyo_noisy && \
-    ln -s ../../carologistics/hokuyo_carologistics/meshes . && \
+    cd /home/ubuntu/git && \
+    git clone https://github.com/wadaru/gazebo-rcll && \
     cd /home/ubuntu/git/amr && \
     git pull --ff-only && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
-    git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch && \
-    # cd models && \
-    # git add bbu/hokuyo_noisy/model.sdf bbu/robotino_bbu/model.sdf machine/model.sdf mps_base/model.sdf \
-    #         mps_cap/model.sdf mps_delivery/model.sdf mps_ring/model.sdf mps_storage/model.sdf \
-    #         robotino_gripper/model.sdf && \
-    # git add ../worlds/bbu_2015.world && \
-    echo "git add -N" && \
-    git add -N worlds/btr_2025.world && \
-    git add -N models/robot_2dw1c/model.config \
-               models/robot_2dw1c/model.sdf \
-               models/robot_3dw/model.config \
-               models/robot_3dw/model.sdf \
-               models/robot_4dw/model.config \
-               models/robot_4dw/model.sdf \
-               models/robot_4dw/wheel.dae && \
-    echo "gazebo-rcll......."
+    ## git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch
+    echo "gazebo-rcll."
 
 ### make myAGV 
 RUN mkdir -p /home/ubuntu/git && \
@@ -163,12 +172,12 @@ RUN mkdir -p /home/ubuntu/git && \
     git clone https://github.com/elephantrobotics/myagv_ros2 && \
     cd myagv_ros2 && \
     git apply  /home/ubuntu/git/amr/gazebo/docker/myAGV_wataru.patch && \
-    mkdir -p /home/ubuntu/git/gazebo-rcll/models/robot_4dw && \
-    #
-    # including gazebo_wataru.patch
-    # gz sdf -p /home/ubuntu/git/myagv_ros2/myagv_description/urdf/myAGV.urdf > /home/ubuntu/git/gazebo-rcll/models/robot_4dw/model.sdf && \
-    cp /home/ubuntu/git/gazebo-rcll/models/robot_3dw/model.config /home/ubuntu/git/gazebo-rcll/models/robot_4dw/ && \
-    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/ && \
+##    mkdir -p /home/ubuntu/git/gazebo-rcll/models/robot_4dw && \
+##    #
+##    # including gazebo_wataru.patch
+##    # gz sdf -p /home/ubuntu/git/myagv_ros2/myagv_description/urdf/myAGV.urdf > /home/ubuntu/git/gazebo-rcll/models/robot_4dw/model.sdf && \
+##    cp /home/ubuntu/git/gazebo-rcll/models/robot_3dw/model.config /home/ubuntu/git/gazebo-rcll/models/robot_4dw/ && \
+##    ln -s /home/ubuntu/git/myagv_ros2/myagv_description /home/ubuntu/git/gazebo-rcll/models/ && \
     echo "myAGV."
 
 ### install  SLAM-toolbox
