@@ -1,0 +1,33 @@
+{
+  "name": "ROS 2 AMR Dev Environment",
+  "build": {
+    "dockerfile": "../Dockerfile"
+  },
+  "dockerComposeFile": "../docker-compose.yaml",
+  "service": "ros2_amr_env",
+  "workspaceFolder": "/home/ubuntu/git/amr",
+  "remoteUser": "ubuntu",
+
+  "appPort": [
+    "6080:80"
+  ],
+
+  "postStartCommandUser": "root",
+  "postStartCommand": "sudo /startup.sh",
+
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-vscode.cpptools",
+        "ms-python.python",
+        "dotjoshjohnson.xml",
+        "redhat.vscode-yaml"
+      ]
+    }
+  },
+  "portsAttributes": {
+    "6080": {
+      "label": "80"
+    }
+  }
+}
