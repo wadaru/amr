@@ -12,7 +12,7 @@ def generate_launch_description():
     world_path = os.path.join(home, 'git/gazebo-rcll/worlds/btr_2025.world')
     models_dir = os.path.join(home, 'git/gazebo-rcll/models')
     teleop_script = os.path.join(home, 'git/amr/gazebo/docker/scripts/teleop_keyboard_robot.sh')
-
+    rviz_config_path = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/rviz/amr.rviz')
     gz_resource_path = ':'.join([
         models_dir,
         os.path.join(models_dir, 'carologistics'),
@@ -35,7 +35,7 @@ def generate_launch_description():
     # 2. Rviz2の起動
     # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
     rviz2 = ExecuteProcess(
-        cmd=['rviz2', 'rviz2'],
+        cmd=['rviz2', '-d', rviz_config_path],
         output='screen'
     )
 
@@ -59,6 +59,10 @@ def generate_launch_description():
         arguments=[
             # clock のブリッジ
             '/clock@rosgraph_msgs/msg/Clock[gz.msgs.Clock',
+            # /cmd_vel
+            '/robot_2dw1c/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+            '/robot_3dw/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
+            '/robot_4dw/cmd_vel@geometry_msgs/msg/Twist@gz.msgs.Twist',
             # Odomのブリッジ
             '/model/robot_2dw1c/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
             '/model/robot_3dw/odom@nav_msgs/msg/Odometry[gz.msgs.Odometry',
@@ -226,6 +230,7 @@ def generate_launch_description():
             on_start=[
                 ExecuteProcess(
                     cmd=['bash', '-c',
+                         'sleep 3 && '
                          'ros2 lifecycle set /robot_4dw/slam_toolbox configure && '
                          'ros2 lifecycle set /robot_4dw/slam_toolbox activate'],
                     output='screen'

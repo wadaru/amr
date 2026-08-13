@@ -8,8 +8,13 @@
   "workspaceFolder": "/home/ubuntu/git/amr",
   "remoteUser": "ubuntu",
 
+  "workspaceMount": "source=${localEnv:HOME}/ros2_ws,target=/home/ubuntu/colcon_ws,type=bind",
+  "workspaceMount": "source=${localEnv:HOME}/git,target=/home/ubuntu/git,type=bind",
+
   "appPort": [
-    "6080:80"
+    "6080:80",
+    "5901:5901",
+    "10022:22",
   ],
 
   "postStartCommandUser": "root",

@@ -3,6 +3,7 @@ services:
     build: .
     volumes:
       - ~/ros2_ws:/home/ubuntu/colcon_ws:cached
+      - ~/git:/home/ubuntu/git:cached
     ports:
       - "6080:80"
       - "10000:10000"
