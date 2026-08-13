@@ -79,7 +79,6 @@ RUN mkdir -p /home/ubuntu/git && \
     # git checkout 13-workshop-of-iem-icdc2026 && \
     mkdir -p /home/ubuntu/Desktop && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
-    ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-docker-setup.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch_slam.desktop /home/ubuntu/Desktop/ && \
     echo "source ~/colcon_ws/install/setup.bash" >> /home/ubuntu/.bashrc && \
     echo "amr..."
@@ -90,7 +89,6 @@ RUN mkdir -p /home/ubuntu/git && \
     cd /home/ubuntu/git/amr && \
     git pull --ff-only && \
     cd /home/ubuntu/git/gazebo-rcll/ && \
-    ## git apply /home/ubuntu/git/amr/gazebo/docker/gazebo_wataru.patch
     echo "gazebo-rcll."
 
 ### make myAGV 

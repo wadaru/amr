@@ -181,41 +181,33 @@ def generate_launch_description():
             os.path.join(home, 'colcon_ws/src/amr_robot_launcher/yaml/robot_4dw_slam.yaml'),
             {
                 'use_sim_time': True,
+                'autostart': True,
                 'odom_frame': 'robot_4dw/odom',
                 'base_frame': 'robot_4dw/base_footprint',
                 'map_frame': 'robot_4dw/map',
+                'scan_topic': '/robot_4dw/scan',
             }
         ],
         remappings=[
             ('/tf', '/tf'),
             ('/tf_static', '/tf_static'),
-            ('/scan', '/robot_4dw/scan'), # 名前空間内なので相対名でもOK
-            ('/map', '/robot_4dw/map'),
-            ('/map_metadata', '/robot_4dw/map_metadata'),
-            ('/map_updates', '/robot_4dw/map_updates'),
         ]
     )
 
-    # --- ライフサイクルを自動で Configure -> Activate する設定 ---
-    # ExecuteProcess を使って ros2 lifecycle set コマンドを時間差で実行します
-    configure_event = RegisterEventHandler(
-        event_handler=OnProcessStart(
-            target_action=slam_toolbox_node,
-            on_start=[
-                ExecuteProcess(
-                    cmd=['ros2', 'lifecycle', 'set', '/robot_4dw/slam_toolbox', 'configure'],
-                    output='screen'
-                )
-            ]
-        )
-    )
-
-    # configure が成功したタイミングを見計らって activate する（簡易的にタイマーで遅延させる例）
-    # 本来は OnStateTransition を使うのが理想ですが、以下の簡易的な方法でも動きます
-    activate_event = ExecuteProcess(
-        # cmd=['bash', '-c', 'sleep 5; ros2 lifecycle', 'set', '/robot_4dw/slam_toolbox', 'activate'],
-        cmd=['bash', '-c', 'sleep 5; ros2 lifecycle set /robot_4dw/slam_toolbox activate'],
-        output='screen'
+    static_tf_4dw_base_to_laser = Node(
+        package='tf2_ros',
+        executable='static_transform_publisher',
+        name='static_tf_base_to_laser',
+        arguments=[
+            '0.1', '0.0', '0.1',  # X, Y, Z オフセット（実際のセンサー位置に調整してください）
+            '0.0', '0.0', '0.0',  # Yaw, Pitch, Roll
+            'robot_4dw/base_footprint',
+            'robot_4dw/laser_frame'
+        ],
+        remappings=[
+            ('/tf', '/tf'),
+            ('/tf_static', '/tf_static'),
+         ]
     )
 
     # 既存の static_tf_4dw は SLAM と競合するため、SLAM 起動時は除外するか、
@@ -225,6 +217,21 @@ def generate_launch_description():
         package='tf2_ros',
         executable='static_transform_publisher',
         arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/map']
+    )
+
+    # --- 2. ノード起動完了後に configure & activate を順番に発行 ---
+    configure_and_activate = RegisterEventHandler(
+        event_handler=OnProcessStart(
+            target_action=slam_toolbox_node,
+            on_start=[
+                ExecuteProcess(
+                    cmd=['bash', '-c',
+                         'ros2 lifecycle set /robot_4dw/slam_toolbox configure && '
+                         'ros2 lifecycle set /robot_4dw/slam_toolbox activate'],
+                    output='screen'
+                )
+            ]
+        )
     )
 
     # Gazeboのプロセスが開始されたらブリッジを起動する設定
@@ -250,7 +257,6 @@ def generate_launch_description():
         static_tf_4dw_to_map,
         delayed_bridge,
         slam_toolbox_node,
-        configure_event,
-        # activate は configure の少し後に動くように最後に配置
-        activate_event
+        static_tf_4dw_base_to_laser,
+        configure_and_activate,
     ])
