@@ -102,5 +102,6 @@ RUN mkdir -p /home/ubuntu/git && \
 ### install  SLAM-toolbox
 RUN apt-get update -q && \
     apt-get upgrade -yq  --allow-downgrades && \
-    DEBIAN_FRONTEND=noninteractive apt-get install -yq ros-${ROS_DISTRO}-slam-toolbox && \
+    DEBIAN_FRONTEND=noninteractive apt-get install -yq ros-${ROS_DISTRO}-slam-toolbox ros-${ROS_DISTRO}-navigation2 \ 
+                                                       ros-${ROS_DISTRO}-topic-tools && \
     rm -rf /var/lib/apt/lists/*

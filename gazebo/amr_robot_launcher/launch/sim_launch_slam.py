@@ -195,7 +195,29 @@ def generate_launch_description():
         remappings=[
             ('/tf', '/tf'),
             ('/tf_static', '/tf_static'),
+            ('~/transition_event',           '/slam_toolbox/transition_event'),
+            ('~/change_state',               '/slam_toolbox/change_state'),
+            ('~/describe_parameters',        '/slam_toolbox/describe_parameters'),
+            ('~/get_available_states',       '/slam_toolbox/get_available_states'),
+            ('~/get_available_transitions',  '/slam_toolbox/get_available_transitions'),
+            ('~/get_parameter_types',        '/slam_toolbox/get_parameter_types'),
+            ('~/get_parameters',             '/slam_toolbox/get_parameters'),
+            ('~/get_state',                  '/slam_toolbox/get_state'),
+            ('~/get_transition_graph',       '/slam_toolbox/get_transition_graph'),
+            ('~/get_type_description',       '/slam_toolbox/get_type_description'),
+            ('~/list_parameters',            '/slam_toolbox/list_parameters'),
+            ('~/save_map',                   '/slam_toolbox/save_map'),
+            ('~/set_parameters',             '/slam_toolbox/set_parameters'),
+            ('~/set_parameters_atomically',  '/slam_toolbox/set_parameters_atomically'),
         ]
+    )
+    map_relay_node = Node(
+        package='topic_tools',
+        executable='relay',
+        name='map_relay',
+        parameters=[{'use_sim_time': True}],
+        arguments=['/map', '/robot_4dw/map'],
+        output='screen'
     )
 
     static_tf_4dw_base_to_laser = Node(
@@ -231,8 +253,12 @@ def generate_launch_description():
                 ExecuteProcess(
                     cmd=['bash', '-c',
                          'sleep 3 && '
-                         'ros2 lifecycle set /robot_4dw/slam_toolbox configure && '
-                         'ros2 lifecycle set /robot_4dw/slam_toolbox activate'],
+                         'sleep 3 && '
+                         # 1. Configure (ID: 1) をサービス経由で直接呼ぶ
+                         'ros2 service call /slam_toolbox/change_state lifecycle_msgs/srv/ChangeState "{transition: {id: 1}}" && '
+                         'sleep 1 && '
+                         # 2. Activate (ID: 3) をサービス経由で直接呼ぶ
+                         'ros2 service call /slam_toolbox/change_state lifecycle_msgs/srv/ChangeState "{transition: {id: 3}}"'],
                     output='screen'
                 )
             ]
@@ -263,5 +289,6 @@ def generate_launch_description():
         delayed_bridge,
         slam_toolbox_node,
         static_tf_4dw_base_to_laser,
+        map_relay_node,
         configure_and_activate,
     ])
