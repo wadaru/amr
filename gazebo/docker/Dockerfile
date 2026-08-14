@@ -103,5 +103,5 @@ RUN mkdir -p /home/ubuntu/git && \
 RUN apt-get update -q && \
     apt-get upgrade -yq  --allow-downgrades && \
     DEBIAN_FRONTEND=noninteractive apt-get install -yq ros-${ROS_DISTRO}-slam-toolbox ros-${ROS_DISTRO}-navigation2 \ 
-                                                       ros-${ROS_DISTRO}-topic-tools && \
+                                                       ros-${ROS_DISTRO}-topic-tools ros-${ROS_DISTRO}-nav2-bringup && \
     rm -rf /var/lib/apt/lists/*
