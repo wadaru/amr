@@ -9,7 +9,7 @@ def generate_launch_description():
     home = os.path.expanduser('~')
     
     # パスの定義
-    world_path = os.path.join(home, 'git/gazebo-rcll/worlds/btr_2025.world')
+    world_path = os.path.join(home, 'git/gazebo-rcll/worlds/btr_2025_simple.world')
     models_dir = os.path.join(home, 'git/gazebo-rcll/models')
     teleop_script = os.path.join(home, 'git/amr/gazebo/docker/scripts/teleop_keyboard_robot.sh')
     rviz_config_path = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/rviz/amr.rviz')
