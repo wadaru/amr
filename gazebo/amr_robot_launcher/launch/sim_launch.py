@@ -25,7 +25,7 @@ def generate_launch_description():
     nav2_navigation_dir = get_package_share_directory('nav2_bringup')
     nav2_navigation_launch_path = os.path.join(nav2_navigation_dir, 'launch', 'navigation_launch.py')
     # パラメータファイルやマップファイルのパス（環境に合わせて調整してください）
-    map_yaml_file = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/map.yaml')
+    map_yaml_file = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/map/map.yaml')
     params_file_path = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml')
 
     # 起動時に「gz」を全消去
