@@ -1,8 +1,10 @@
 import os
+from ament_index_python.packages import get_package_share_directory
 from launch import LaunchDescription
-from launch.actions import ExecuteProcess, RegisterEventHandler
+from launch.actions import ExecuteProcess, RegisterEventHandler, IncludeLaunchDescription, GroupAction
 from launch.event_handlers import OnProcessStart
-from launch_ros.actions import Node
+from launch.launch_description_sources import PythonLaunchDescriptionSource
+from launch_ros.actions import Node, SetRemap
 import subprocess
 
 def generate_launch_description():
@@ -19,6 +21,12 @@ def generate_launch_description():
         os.path.join(models_dir, 'bbu'),
         os.path.join(models_dir, 'pyro'),
     ])
+    # nav2_bringup パッケージのパスを取得
+    nav2_navigation_dir = get_package_share_directory('nav2_bringup')
+    nav2_navigation_launch_path = os.path.join(nav2_navigation_dir, 'launch', 'navigation_launch.py')
+    # パラメータファイルやマップファイルのパス（環境に合わせて調整してください）
+    map_yaml_file = '/home/ubuntu/map.yaml'
+    params_file_path = os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml')
 
     # 起動時に「gz」を全消去
     subprocess.run("pkill -9 -f gz", shell=True)
@@ -33,9 +41,12 @@ def generate_launch_description():
     )
 
     # 2. Rviz2の起動
-    # GZ_SIM_RESOURCE_PATHを設定することで、cdしなくてもモデルを読み込めます
-    rviz2 = ExecuteProcess(
-        cmd=['rviz2', '-d', rviz_config_path],
+    rviz2 = Node(
+        package='rviz2',
+        executable='rviz2',
+        name='rviz2',
+        arguments=['-d', rviz_config_path],
+        parameters=[{'use_sim_time': True}],
         output='screen'
     )
 
@@ -136,6 +147,9 @@ def generate_launch_description():
             ('/model/robot_4dw/rgb_camera', '/robot_4dw/rgb/image'),
             ('/model/robot_4dw/rgb_camera/camera_info', '/robot_4dw/rgb/camera_info'),
         ],
+        parameters=[
+            {'use_sim_time': True},
+        ],
         output='screen'
     )
 
@@ -143,17 +157,20 @@ def generate_launch_description():
     static_tf_2dw1c = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         # 引数: x y z yaw pitch roll parent_frame child_frame
         arguments = ['-6.5', '0.5', '0', '0', '0', '0', 'world', 'robot_2dw1c/odom']
     )
     static_tf_3dw = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_3dw/odom']
     )
     static_tf_4dw = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/odom']
     )
 
@@ -161,16 +178,19 @@ def generate_launch_description():
     static_tf_2dw1c_depth_cam = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_2dw1c/base_link', 'robot_2dw1c/depth_camera_frame']
     )
     static_tf_3dw_depth_cam = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_3dw/body', 'robot_3dw/depth_camera_frame']
     )
     static_tf_4dw_depth_cam = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments=['0', '0', '1.0',  '0', '0', '0', '1',  'robot_4dw/base_footprint', 'robot_4dw/depth_camera_frame']
     )
 
@@ -182,7 +202,7 @@ def generate_launch_description():
         name='slam_toolbox',
         output='screen',
         parameters=[
-            os.path.join(home, 'colcon_ws/src/amr_robot_launcher/yaml/robot_4dw_slam.yaml'),
+            os.path.join(home, 'git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_slam.yaml'),
             {
                 'use_sim_time': True,
                 'autostart': True,
@@ -225,15 +245,18 @@ def generate_launch_description():
         executable='static_transform_publisher',
         name='static_tf_base_to_laser',
         arguments=[
-            '0.1', '0.0', '0.1',  # X, Y, Z オフセット（実際のセンサー位置に調整してください）
+            '0.0', '0.0', '0.25',  # X, Y, Z オフセット（実際のセンサー位置に調整してください）
             '0.0', '0.0', '0.0',  # Yaw, Pitch, Roll
             'robot_4dw/base_footprint',
             'robot_4dw/laser_frame'
         ],
-        remappings=[
-            ('/tf', '/tf'),
-            ('/tf_static', '/tf_static'),
-         ]
+        parameters=[
+            {'use_sim_time': True},
+        ],
+        # remappings=[
+        #     ('/tf', '/tf'),
+        #     ('/tf_static', '/tf_static'),
+        #  ]
     )
 
     # 既存の static_tf_4dw は SLAM と競合するため、SLAM 起動時は除外するか、
@@ -242,6 +265,7 @@ def generate_launch_description():
     static_tf_4dw_to_map = Node(
         package='tf2_ros',
         executable='static_transform_publisher',
+        parameters=[{'use_sim_time': True}],
         arguments = ['0', '0', '0', '0', '0', '0', 'world', 'robot_4dw/map']
     )
 
@@ -253,12 +277,12 @@ def generate_launch_description():
                 ExecuteProcess(
                     cmd=['bash', '-c',
                          'sleep 3 && '
-                         'sleep 3 && '
                          # 1. Configure (ID: 1) をサービス経由で直接呼ぶ
                          'ros2 service call /slam_toolbox/change_state lifecycle_msgs/srv/ChangeState "{transition: {id: 1}}" && '
                          'sleep 1 && '
                          # 2. Activate (ID: 3) をサービス経由で直接呼ぶ
-                         'ros2 service call /slam_toolbox/change_state lifecycle_msgs/srv/ChangeState "{transition: {id: 3}}"'],
+                         'ros2 service call /slam_toolbox/change_state lifecycle_msgs/srv/ChangeState "{transition: {id: 3}}"'
+                         ],
                     output='screen'
                 )
             ]
@@ -271,6 +295,108 @@ def generate_launch_description():
             target_action=gz_sim,
             on_start=[bridge_node]
         )
+    )
+
+    cmd_vel_relay_node = Node(
+        package='topic_tools',
+        executable='relay',
+        name='cmd_vel_relay',
+        parameters=[{'use_sim_time': True}],
+        arguments=['/cmd_vel', '/robot_4dw/cmd_vel'],
+        output='screen'
+    )
+
+    # ros2 run nav2_map_server map_server   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml -p yaml_filename:=/home/ubuntu/map.yaml
+    map_server_node = Node(
+        package='nav2_map_server',
+        executable='map_server',
+        name='map_server',
+        namespace='robot_4dw',  # -r __ns:=/robot_4dw に対応
+        output='screen',
+        parameters=[
+            params_file_path,   # --params-file に対応
+            {'yaml_filename': map_yaml_file}  # -p yaml_filename:=... に対応
+        ]
+    )
+
+    # ros2 run nav2_amcl amcl   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml
+    amcl_node = Node(
+        package='nav2_amcl',
+        executable='amcl',
+        name='amcl',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[
+            params_file_path
+        ]
+    )
+
+    # ros2 run nav2_planner planner_server   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml
+    planner_server_node = Node(
+        package='nav2_planner',
+        executable='planner_server',
+        name='planner_server',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[
+            params_file_path
+        ]
+    )
+
+    # ros2 run nav2_bt_navigator bt_navigator   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml
+    bt_navigator_node = Node(
+        package='nav2_bt_navigator',
+        executable='bt_navigator',
+        name='bt_navigator',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[
+            params_file_path
+        ]
+    )
+
+    # ros2 run nav2_controller controller_server   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml
+    controller_server_node = Node(
+        package='nav2_controller',
+        executable='controller_server',
+        name='controller_server',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[
+            params_file_path
+        ]
+    )
+
+    # ros2 run nav2_behaviors behavior_server   --ros-args   -r __ns:=/robot_4dw   --params-file /home/ubuntu/git/amr/gazebo/amr_robot_launcher/launch/yaml/robot_4dw_nav2.yaml
+    behavior_server_node = Node(
+        package='nav2_behaviors',
+        executable='behavior_server',
+        name='behavior_server',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[
+            params_file_path
+        ]
+    )
+
+    lifecycle_manager_node = Node(
+        package='nav2_lifecycle_manager',
+        executable='lifecycle_manager',
+        name='lifecycle_manager_navigation',
+        namespace='robot_4dw',
+        output='screen',
+        parameters=[{
+            'use_sim_time': True,
+            'autostart': True,
+            'node_names': [
+                'map_server',
+                'amcl',
+                'planner_server',
+                'controller_server',
+                'behavior_server',
+                'bt_navigator'
+            ]
+        }]
     )
 
     return LaunchDescription([
@@ -290,5 +416,14 @@ def generate_launch_description():
         slam_toolbox_node,
         static_tf_4dw_base_to_laser,
         map_relay_node,
+        # nav2_action,
+        cmd_vel_relay_node,
+        map_server_node,
+        amcl_node,
+        planner_server_node,
+        bt_navigator_node,
+        controller_server_node,
+        behavior_server_node,
         configure_and_activate,
+        lifecycle_manager_node,
     ])

@@ -1,9 +1,11 @@
 /**/slam_toolbox:  # 名前空間を含めたノード名
   ros__parameters:
-    autostart: true
+    use_sim_time: True
+    autostart: True
     odom_frame: robot_4dw/odom
     base_frame: robot_4dw/base_footprint
     scan_topic: /robot_4dw/scan
     map_frame: robot_4dw/map
-    use_sim_time: true
     mode: mapping
+    # map_file_name: "/home/ubuntu/map"
+    map_start_at_dock: True
