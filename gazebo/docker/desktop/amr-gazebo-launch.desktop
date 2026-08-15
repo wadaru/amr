@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=Gazebo(AMR - mobile robot)
+Name=Gazebo(AMR - three mobile robots)
 Comment=run gazebo simulator with mobile robots
 Exec=terminator -e "bash ~/git/amr/gazebo/docker/desktop/amr-gazebo-launch.sh"
 Icon=terminator
