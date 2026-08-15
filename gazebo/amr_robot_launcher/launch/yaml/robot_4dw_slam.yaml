@@ -7,6 +7,6 @@
     scan_topic: /robot_4dw/scan
     map_frame: robot_4dw/map
     mode: mapping
-    # map_file_name: "/home/ubuntu/map"
+    # map_file_name: "/home/ubuntu/git/amr/gazebo/amr_robot_launcher/map"
     map_start_at_dock: True
     dimensions: 2
