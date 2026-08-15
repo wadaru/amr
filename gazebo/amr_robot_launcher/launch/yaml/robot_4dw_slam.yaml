@@ -9,3 +9,4 @@
     mode: mapping
     # map_file_name: "/home/ubuntu/map"
     map_start_at_dock: True
+    dimensions: 2
