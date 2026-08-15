@@ -15,8 +15,13 @@ if [ ! -f /home/ubuntu/colcon_ws/install/setup.bash ]; then
     sudo -u ubuntu bash -c '
         source /opt/ros/jazzy/setup.bash
         cd ~/colcon_ws
-        colcon build
-    '
+        colcon build'
+fi
+
+# for gazebo-rcll
+if [ ! -f /home/ubuntu/git/gazebo-rcll ]; then
+    cd /home/ubuntu/git
+    git clone https://github.com/wadaru/gazebo-rcll
 fi
 
 exec /entrypoint.sh

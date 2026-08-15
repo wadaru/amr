@@ -77,6 +77,7 @@ RUN mkdir -p /home/ubuntu/git && \
     git clone https://github.com/wadaru/amr && \
     cd amr && \
     # git checkout 13-workshop-of-iem-icdc2026 && \
+    git checkout 18-prepare-simple-world && \
     mkdir -p /home/ubuntu/Desktop && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch.desktop /home/ubuntu/Desktop/ && \
     ln -s /home/ubuntu/git/amr/gazebo/docker/desktop/amr-gazebo-launch_slam.desktop /home/ubuntu/Desktop/ && \
