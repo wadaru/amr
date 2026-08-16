@@ -227,6 +227,8 @@ def generate_launch_description():
             ('~/get_type_description',       '/slam_toolbox/get_type_description'),
             ('~/list_parameters',            '/slam_toolbox/list_parameters'),
             ('~/save_map',                   '/slam_toolbox/save_map'),
+            ('~/serialize_map',             '/slam_toolbox/serialize_map'),
+            ('~/deserialize_map',           '/slam_toolbox/deserialize_map'),
             ('~/set_parameters',             '/slam_toolbox/set_parameters'),
             ('~/set_parameters_atomically',  '/slam_toolbox/set_parameters_atomically'),
         ]
