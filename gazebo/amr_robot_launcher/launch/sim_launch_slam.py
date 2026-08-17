@@ -405,8 +405,8 @@ def generate_launch_description():
     return LaunchDescription([
         gz_sim,
         rviz2,
-        teleop_robot_2dw1c,
-        teleop_robot_3dw,
+        # teleop_robot_2dw1c,
+        # teleop_robot_3dw,
         teleop_robot_4dw,
         static_tf_2dw1c,
         static_tf_3dw,

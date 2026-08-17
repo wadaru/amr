@@ -54,7 +54,11 @@ def generate_launch_description():
     # terminator -e の形式を再現します
     def create_teleop_process(robot_name):
         return ExecuteProcess(
-            cmd=['terminator', '--new-tab', '-e', f'bash -c "source {home}/.bashrc; source {home}/colcon_ws/install/setup.bash; {teleop_script} {robot_name}; exec bash"'],
+            cmd=[
+                'terminator', 
+                '--new-tab',
+                '-e', f'bash -c "source {home}/.bashrc; source {home}/colcon_ws/install/setup.bash; echo {robot_name}; {teleop_script} {robot_name}; exec bash"'
+                ],
             output='screen'
         )
 
